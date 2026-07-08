@@ -1,0 +1,28 @@
+.partner {
+  background: #ffffff;
+  padding: 4rem 0;
+  text-align: center;
+  border-top: 1px solid #eaeaea;
+}
+.partner h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+.partner p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  color: #4a4a4a;
+  font-size: 1.1rem;
+}
+.btn {
+  display: inline-block;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.8rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.btn:hover { background: #333; }

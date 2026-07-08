@@ -1,0 +1,27 @@
+.hero {
+  text-align: center;
+  padding: 4rem 0 3rem;
+}
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+.hero h1 span { color: #4a4a4a; font-weight: 300; }
+.subtitle {
+  font-size: 1.2rem;
+  color: #4a4a4a;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+.ctaGroup { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.primaryBtn {
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 0.8rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.primaryBtn:hover { background: #333; transform: scale(1.02); }

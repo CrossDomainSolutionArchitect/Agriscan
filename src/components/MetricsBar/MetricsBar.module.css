@@ -1,0 +1,29 @@
+.metrics {
+  background: #f8f9fa;
+  padding: 2.5rem 0;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+.item { display: flex; flex-direction: column; }
+.value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.label {
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  margin-top: 0.25rem;
+}
+@media (max-width: 768px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+}
