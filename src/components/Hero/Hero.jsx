@@ -4,23 +4,15 @@ import styles from './Hero.module.css'
 function Hero() {
   return (
     <section className={styles.hero}>
-      <span className={styles.eyebrow}>cdsa.ai Studio</span>
-      <h1>
-        AI Diagnostics, Built for <br />
-        <span>Southern African Conditions</span>
-      </h1>
+      <div className={styles.badge}>Built in Mpumalanga · Trained for Southern African Crops</div>
+      <h1>AI-Powered Diagnostics <br /><span>for Southern Africa</span></h1>
       <p className={styles.subtitle}>
-        Agriscan uses computer vision trained across 38 crop disease classes to help
-        maize, citrus, tomato, and potato farmers spot disease before it spreads.
+        Computer vision models trained to detect crop disease and skin conditions
+        from a single photo — built for the field, not the lab.
       </p>
       <div className={styles.ctaGroup}>
-        <a href="#agriscan" className={styles.primaryBtn}>Try Agriscan</a>
-        <a href="#how-it-works" className={styles.secondaryBtn}>See how it works</a>
-      </div>
-      <div className={styles.statsRow}>
-        <div><strong>38</strong><span>disease classes</span></div>
-        <div><strong>4</strong><span>crops covered</span></div>
-        <div><strong>ZA</strong><span>built for local conditions</span></div>
+        <a href="#products" className={styles.primaryBtn}>Explore Our Solutions</a>
+        <a href="/agriscan" className={styles.secondaryBtn}>See a Sample Scan →</a>
       </div>
     </section>
   )
