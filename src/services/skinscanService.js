@@ -1,5 +1,5 @@
-// SkinScan API Service - Communicates with Hugging Face Space
-import { Client, handle_file } from 'gradio-client'
+// SkinScan API Service - Using @gradio/client
+import { Client } from '@gradio/client'
 
 const SPACE_NAME = 'Vernard/scin-skin-classifier'
 
@@ -8,51 +8,50 @@ let client = null
 // Initialize the client (singleton pattern)
 async function getClient() {
   if (!client) {
-    client = await Client.connect(SPACE_NAME)
+    try {
+      client = await Client.connect(SPACE_NAME)
+    } catch (error) {
+      console.error('Failed to connect to SkinScan API:', error)
+      throw new Error('Could not connect to SkinScan API. Please try again later.')
+    }
   }
   return client
 }
 
-// Predict skin condition from an image URL or File
-export async function predictSkinCondition(imageSource) {
+// Predict skin condition from an image File
+export async function predictSkinCondition(imageFile) {
   try {
     const client = await getClient()
     
-    // If imageSource is a File object, we need to handle it differently
-    let result
-    if (imageSource instanceof File) {
-      // Convert File to a format gradio-client expects
-      const fileData = handle_file(imageSource)
-      result = await client.predict('/predict', { image: fileData })
-    } else if (typeof imageSource === 'string' && imageSource.startsWith('http')) {
-      // URL image
-      const fileData = handle_file(imageSource)
-      result = await client.predict('/predict', { image: fileData })
-    } else if (typeof imageSource === 'string' && imageSource.startsWith('data:')) {
-      // Base64 image (from canvas/camera)
-      const fileData = handle_file(imageSource)
-      result = await client.predict('/predict', { image: fileData })
-    } else {
-      throw new Error('Unsupported image format')
+    // The API expects the image as a File object
+    const result = await client.predict('/predict', {
+      image: imageFile
+    })
+    
+    // Parse the response - the structure might be nested
+    let predictionData = result.data
+    
+    // Sometimes the result is nested differently
+    if (result.data && Array.isArray(result.data)) {
+      predictionData = result.data[0]
     }
     
-    // Parse the response
-    // The API returns: { label: "Acne", confidences: [{label: "Acne", confidence: 0.95}, ...] }
     return {
-      diagnosis: result.label,
-      confidences: result.confidences || [],
-      timestamp: new Date().toISOString()
+      diagnosis: predictionData.label || predictionData,
+      confidences: predictionData.confidences || [],
+      timestamp: new Date().toISOString(),
+      raw: result
     }
   } catch (error) {
     console.error('SkinScan API error:', error)
-    throw error
+    throw new Error(error.message || 'Failed to analyze image. Please try again.')
   }
 }
 
-// Get health status of the API
+// Get health status
 export async function getHealthStatus() {
   try {
-    const client = await getClient()
+    await getClient()
     return { status: 'healthy', space: SPACE_NAME }
   } catch (error) {
     return { status: 'unhealthy', error: error.message }
