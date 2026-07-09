@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { predictPlantDisease } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
-
+import { predictPlantDisease } from '../../services/agriscanService'
 function AgriscanUploader() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
