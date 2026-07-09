@@ -1,7 +1,7 @@
 // Agriscan API Service - Using REST API
-const SPACE_NAME = 'Vernard/agriscan-ai-demo'
+// Agriscan API Service - Using REST API
+const SPACE_NAME = 'Vernard-agriscan-ai-demo'  // Replace slash with hyphen
 const API_URL = `https://${SPACE_NAME}.hf.space/api/predict`
-
 // Helper: Convert File to base64
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
