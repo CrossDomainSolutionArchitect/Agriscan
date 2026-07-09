@@ -155,75 +155,49 @@ function AgriscanUploader() {
           )}
 
           {/* Results */}
-{result && !loading && (
-  <div className={styles.results}>
-    <h3>🌾 Diagnosis Result</h3>
-    
-    {/* Top Prediction */}
-    {result.topPrediction && (
-      <div className={styles.diagnosisBox}>
-        <span className={styles.diagnosisLabel}>Top Prediction:</span>
-        <span className={styles.diagnosisValue}>{result.topPrediction.label}</span>
-        <div className={styles.confidenceBar}>
-          <div 
-            className={styles.confidenceFill}
-            style={{ width: `${(result.topPrediction.confidence * 100)}%` }}
-          />
-        </div>
-        <span className={styles.confidencePercentage}>
-          {(result.topPrediction.confidence * 100).toFixed(1)}%
-        </span>
-      </div>
-    )}
+          {result && !loading && (
+            <div className={styles.results}>
+              <h3>🌾 Diagnosis Result</h3>
+              
+              {/* Display confidence if available */}
+              {result.confidence && (
+                <div className={styles.confidenceBox}>
+                  <span className={styles.confidenceLabel}>Confidence:</span>
+                  <span className={styles.confidenceValue}>
+                    {(result.confidence * 100).toFixed(1)}%
+                  </span>
+                  <div className={styles.confidenceBar}>
+                    <div 
+                      className={styles.confidenceFill}
+                      style={{ width: `${(result.confidence * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
 
-    {/* All Predictions */}
-    {result.predictions && result.predictions.length > 0 && (
-      <div className={styles.confidenceSection}>
-        <h4>All Predictions</h4>
-        <div className={styles.confidenceList}>
-          {result.predictions.map((item, index) => (
-            <div key={index} className={styles.confidenceItem}>
-              <span className={styles.confidenceLabel}>{item.label}</span>
-              <div className={styles.confidenceBar}>
-                <div 
-                  className={styles.confidenceFill}
-                  style={{ width: `${(item.confidence * 100)}%` }}
-                />
+              {/* Display the full diagnosis */}
+              <div className={styles.diagnosisBox}>
+                {formatDiagnosis(result.diagnosis)}
               </div>
-              <span className={styles.confidenceValue}>
-                {(item.confidence * 100).toFixed(1)}%
-              </span>
+
+              <div className={styles.resultActions}>
+                <button onClick={handleReset} className={styles.newAnalysisBtn}>
+                  🔄 New Analysis
+                </button>
+                <button 
+                  onClick={() => window.print()} 
+                  className={styles.printBtn}
+                >
+                  🖨️ Print Results
+                </button>
+              </div>
+
+              <p className={styles.disclaimer}>
+                ⚠️ This is an AI-powered tool for informational purposes only. 
+                Always consult a qualified agricultural expert for crop disease advice.
+              </p>
             </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-    {/* Timestamp */}
-    {result.timestamp && (
-      <p className={styles.timestamp}>
-        Analyzed: {new Date(result.timestamp).toLocaleString()}
-      </p>
-    )}
-
-    <div className={styles.resultActions}>
-      <button onClick={handleReset} className={styles.newAnalysisBtn}>
-        🔄 New Analysis
-      </button>
-      <button 
-        onClick={() => window.print()} 
-        className={styles.printBtn}
-      >
-        🖨️ Print Results
-      </button>
-    </div>
-
-    <p className={styles.disclaimer}>
-      ⚠️ This is an AI-powered tool for informational purposes only. 
-      Always consult a qualified agricultural expert for crop disease advice.
-    </p>
-  </div>
-)}
+          )}
 
           {/* Error State */}
           {error && (
