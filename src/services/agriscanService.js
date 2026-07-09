@@ -1,11 +1,10 @@
-// Agriscan API Service - Using @gradio/client (exact same pattern as SkinScan)
+// Agriscan API Service - Using @gradio/client
 import { Client } from '@gradio/client'
 
 const SPACE_NAME = 'Vernard/agriscan-ai-demo'
 
 let client = null
 
-// Initialize the client (singleton pattern)
 async function getClient() {
   if (!client) {
     try {
@@ -18,55 +17,49 @@ async function getClient() {
   return client
 }
 
-// Predict plant disease from an image File
+// Parse the Markdown table from Agriscan output
+function parseAgriscanTable(markdown) {
+  // Extract the table rows between the header and the footer
+  const tableRegex = /\|\s*#\d+\s*\|\s*`([^`]+)`\s*\|\s*([\d.]+)%?\s*\|\s*[`█░]+\s*\|/g
+  const predictions = []
+  let match
+  
+  while ((match = tableRegex.exec(markdown)) !== null) {
+    const label = match[1].trim()
+    const confidence = parseFloat(match[2]) / 100  // Convert to 0-1
+    predictions.push({ label, confidence })
+  }
+  
+  return predictions
+}
+
+// Predict plant disease
 export async function predictPlantDisease(imageFile) {
   try {
     const client = await getClient()
-    
-    // The API expects the image as a File object
     const result = await client.predict('/predict', {
       image: imageFile
     })
     
-    // Parse the response
-    let diagnosisText = result.data?.[0] || 'No diagnosis returned'
+    const rawOutput = result.data?.[0] || 'No diagnosis returned'
     
-    // Try to extract structured data if present
-    let confidence = null
-    let parsedLabel = null
+    // Parse the table
+    const predictions = parseAgriscanTable(rawOutput)
     
-    try {
-      if (diagnosisText.includes('{') && diagnosisText.includes('}')) {
-        const jsonMatch = diagnosisText.match(/\{.*\}/s)
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0])
-          parsedLabel = parsed.label
-          confidence = parsed.confidence
-        }
-      }
-    } catch (e) {
-      // Not JSON, that's fine
+    // Determine top prediction
+    let topPrediction = null
+    if (predictions.length > 0) {
+      topPrediction = predictions[0] // Already sorted by rank
     }
     
     return {
-      diagnosis: parsedLabel || diagnosisText,
-      confidence: confidence || null,
-      fullResponse: diagnosisText,
-      timestamp: new Date().toISOString(),
-      raw: result
+      predictions: predictions,
+      topPrediction: topPrediction,
+      rawOutput: rawOutput,
+      timestamp: new Date().toISOString()
     }
   } catch (error) {
     console.error('Agriscan API error:', error)
     throw new Error(error.message || 'Failed to analyze plant image. Please try again.')
-  }
-}
-
-// Get health status
-export async function getHealthStatus() {
-  try {
-    await getClient()
-    return { status: 'healthy', space: SPACE_NAME }
-  } catch (error) {
-    return { status: 'unhealthy', error: error.message }
   }
 }
