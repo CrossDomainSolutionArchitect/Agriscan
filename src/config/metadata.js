@@ -7,7 +7,7 @@ export const PRODUCTS = [
   {
     title: 'Agriscan',
     status: 'In Development',
-    image: 'https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=600&auto=format&fit=crop&q=60',
+    image: 'https://images.unsplash.com/photo-1602867741746-6df80f40b3f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFybWVyc3xlbnwwfHwwfHx8MA%3D%3D',
     description: 'AI plant disease detection from a single photo. Trained on 38 crop diseases and validated for Southern African conditions.',
     tech: 'Plant disease screening tool · agricultural research use',
     route: '/agriscan',
