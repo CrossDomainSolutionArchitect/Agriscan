@@ -121,10 +121,14 @@ function AgriscanUploader() {
           {/* Results - IDENTICAL to SkinScan */}
           {result && !loading && (
             <div className={styles.results}>
-              <h3>Diagnosis Result</h3>
+              <h3>🌾 Diagnosis Result</h3>
               <div className={styles.diagnosisBox}>
                 <span className={styles.diagnosisLabel}>Predicted Condition:</span>
-                <span className={styles.diagnosisValue}>{result.diagnosis}</span>
+                <span className={styles.diagnosisValue}>
+                  {result.diagnosis && !result.diagnosis.startsWith('Unable to parse') 
+                    ? result.diagnosis 
+                    : 'No clear prediction - try a different image'}
+                </span>
               </div>
 
               <div className={styles.confidenceSection}>
