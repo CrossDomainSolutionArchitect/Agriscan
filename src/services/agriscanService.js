@@ -1,4 +1,4 @@
-// Agriscan API Service - Using @gradio/client
+// Agriscan API Service - Using @gradio/client (exact same pattern as SkinScan)
 import { Client } from '@gradio/client'
 
 const SPACE_NAME = 'Vernard/agriscan-ai-demo'
@@ -29,15 +29,13 @@ export async function predictPlantDisease(imageFile) {
     })
     
     // Parse the response
-    // Agriscan returns a string (Markdown) in the first data element
     let diagnosisText = result.data?.[0] || 'No diagnosis returned'
     
-    // Try to extract any structured data if present
+    // Try to extract structured data if present
     let confidence = null
     let parsedLabel = null
     
     try {
-      // Sometimes the response might contain JSON-like structure
       if (diagnosisText.includes('{') && diagnosisText.includes('}')) {
         const jsonMatch = diagnosisText.match(/\{.*\}/s)
         if (jsonMatch) {
@@ -47,7 +45,7 @@ export async function predictPlantDisease(imageFile) {
         }
       }
     } catch (e) {
-      // Not JSON, that's fine - it's plain text
+      // Not JSON, that's fine
     }
     
     return {
