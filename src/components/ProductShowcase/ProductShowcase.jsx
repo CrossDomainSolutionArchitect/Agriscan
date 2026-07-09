@@ -1,4 +1,5 @@
 import React from 'react'
+import PrototypeCard from '../PrototypeCard/PrototypeCard'
 import styles from './ProductShowcase.module.css'
 
 const products = [
