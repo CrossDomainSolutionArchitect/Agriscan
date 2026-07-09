@@ -152,34 +152,61 @@
   color: #1a1a1a;
 }
 
-/* Confidence */
-.confidenceBox {
-  margin-bottom: 1.5rem;
+.diagnosisBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem;
   background: #fff;
   border-radius: 8px;
+  margin-bottom: 1.5rem;
   border: 1px solid #eaeaea;
 }
 
-.confidenceLabel {
+.diagnosisLabel {
   font-weight: 500;
   color: #4a4a4a;
-  margin-right: 1rem;
 }
 
-.confidenceValue {
+.diagnosisValue {
   font-weight: 700;
+  font-size: 1.2rem;
   color: #1a1a1a;
-  float: right;
+}
+
+.confidenceSection h4 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: #4a4a4a;
+}
+
+.confidenceList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.confidenceItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.confidenceLabel {
+  min-width: 180px;
+  font-size: 0.9rem;
+  color: #4a4a4a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .confidenceBar {
-  width: 100%;
+  flex: 1;
   height: 8px;
   background: #eaeaea;
   border-radius: 4px;
   overflow: hidden;
-  margin-top: 0.5rem;
 }
 
 .confidenceFill {
@@ -189,41 +216,19 @@
   transition: width 0.6s ease;
 }
 
-/* Diagnosis Display */
-.diagnosisBox {
-  padding: 1rem;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #eaeaea;
-  margin-bottom: 1.5rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.diagnosisHeader {
-  font-size: 1.1rem;
+.confidenceValue {
+  min-width: 50px;
+  text-align: right;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0.75rem 0 0.25rem;
 }
 
-.diagnosisHeader:first-child {
-  margin-top: 0;
+.noConfidence {
+  color: #888;
+  font-size: 0.9rem;
 }
 
-.diagnosisLine {
-  margin: 0.25rem 0;
-  line-height: 1.6;
-  color: #333;
-}
-
-.diagnosisBullet {
-  margin-left: 1.5rem;
-  line-height: 1.6;
-  color: #333;
-}
-
-/* Result Actions */
 .resultActions {
   display: flex;
   gap: 1rem;
@@ -296,8 +301,9 @@
 
 @media (max-width: 600px) {
   .container { padding: 1rem; }
-  .confidenceBox { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .diagnosisBox { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .confidenceItem { flex-wrap: wrap; }
+  .confidenceLabel { min-width: 120px; font-size: 0.8rem; }
   .resultActions { flex-direction: column; }
   .uploadArea { padding: 2rem 1rem; }
-  .diagnosisBox { padding: 0.75rem; }
 }

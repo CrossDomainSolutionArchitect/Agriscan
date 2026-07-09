@@ -1,4 +1,4 @@
-// Agriscan API Service - Using @gradio/client (exact same pattern as SkinScan)
+// Agriscan API Service - Using @gradio/client (identical to SkinScan pattern)
 import { Client } from '@gradio/client'
 
 const SPACE_NAME = 'Vernard/agriscan-ai-demo'
@@ -18,40 +18,50 @@ async function getClient() {
   return client
 }
 
+// Parse Markdown table from Agriscan output into { label, confidence } array
+function parseMarkdownTable(markdown) {
+  // Match all table rows with this pattern: | #1 | `Label` | 21.66% | `███...` |
+  const rowRegex = /\|\s*#\d+\s*\|\s*`([^`]+)`\s*\|\s*([\d.]+)%?\s*\|\s*[`█░]+\s*\|/g
+  const predictions = []
+  let match
+
+  while ((match = rowRegex.exec(markdown)) !== null) {
+    const label = match[1].trim()
+    const confidence = parseFloat(match[2]) / 100  // Convert to 0-1
+    if (!isNaN(confidence)) {
+      predictions.push({ label, confidence })
+    }
+  }
+
+  return predictions
+}
+
 // Predict plant disease from an image File
 export async function predictPlantDisease(imageFile) {
   try {
     const client = await getClient()
-    
+
     // The API expects the image as a File object
     const result = await client.predict('/predict', {
       image: imageFile
     })
-    
-    // Parse the response
-    let diagnosisText = result.data?.[0] || 'No diagnosis returned'
-    
-    // Try to extract structured data if present
-    let confidence = null
-    let parsedLabel = null
-    
-    try {
-      if (diagnosisText.includes('{') && diagnosisText.includes('}')) {
-        const jsonMatch = diagnosisText.match(/\{.*\}/s)
-        if (jsonMatch) {
-          const parsed = JSON.parse(jsonMatch[0])
-          parsedLabel = parsed.label
-          confidence = parsed.confidence
-        }
-      }
-    } catch (e) {
-      // Not JSON, that's fine
+
+    // Get the raw Markdown output
+    const rawOutput = result.data?.[0] || 'No diagnosis returned'
+
+    // Parse the Markdown table into structured data
+    const confidences = parseMarkdownTable(rawOutput)
+
+    // Extract top prediction (first item)
+    let topPrediction = null
+    if (confidences.length > 0) {
+      topPrediction = confidences[0].label
     }
-    
+
+    // Return in the SAME FORMAT as SkinScan
     return {
-      diagnosis: parsedLabel || diagnosisText,
-      confidence: confidence || null,
-      fullResponse: diagnosisText,
+      diagnosis: topPrediction || 'No prediction available',
+      confidences: confidences,
       timestamp: new Date().toISOString(),
       raw: result
     }

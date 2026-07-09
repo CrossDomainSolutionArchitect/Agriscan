@@ -62,42 +62,6 @@ function AgriscanUploader() {
     }
   }
 
-  // Format the diagnosis text (handle markdown-like output)
-  const formatDiagnosis = (text) => {
-    if (!text) return null
-    
-    // Split by newlines and filter out empty lines
-    const lines = text.split('\n').filter(line => line.trim())
-    
-    return lines.map((line, index) => {
-      // Check if it's a header (starts with #)
-      if (line.startsWith('#')) {
-        const level = line.match(/^#+/)?.[0]?.length || 1
-        const content = line.replace(/^#+\s*/, '')
-        const Tag = `h${Math.min(level + 1, 6)}`
-        return React.createElement(Tag, { key: index, className: styles.diagnosisHeader }, content)
-      }
-      // Check for bold (**text**)
-      if (line.includes('**')) {
-        const parts = line.split(/\*\*(.*?)\*\*/g)
-        return (
-          <p key={index} className={styles.diagnosisLine}>
-            {parts.map((part, i) => {
-              if (i % 2 === 1) return <strong key={i}>{part}</strong>
-              return part
-            })}
-          </p>
-        )
-      }
-      // Check for bullet points
-      if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
-        return <li key={index} className={styles.diagnosisBullet}>{line.trim().substring(1).trim()}</li>
-      }
-      // Regular paragraph
-      return <p key={index} className={styles.diagnosisLine}>{line}</p>
-    })
-  }
-
   return (
     <div className={styles.container}>
       <h2>🌾 Agriscan</h2>
@@ -149,35 +113,42 @@ function AgriscanUploader() {
           {loading && (
             <div className={styles.loadingOverlay}>
               <div className={styles.spinner}></div>
-              <p>Analyzing your plant image...</p>
+              <p>Analyzing your image...</p>
               <p className={styles.loadingNote}>This may take a few seconds</p>
             </div>
           )}
 
-          {/* Results */}
+          {/* Results - IDENTICAL to SkinScan */}
           {result && !loading && (
             <div className={styles.results}>
-              <h3>🌾 Diagnosis Result</h3>
-              
-              {/* Display confidence if available */}
-              {result.confidence && (
-                <div className={styles.confidenceBox}>
-                  <span className={styles.confidenceLabel}>Confidence:</span>
-                  <span className={styles.confidenceValue}>
-                    {(result.confidence * 100).toFixed(1)}%
-                  </span>
-                  <div className={styles.confidenceBar}>
-                    <div 
-                      className={styles.confidenceFill}
-                      style={{ width: `${(result.confidence * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Display the full diagnosis */}
+              <h3>Diagnosis Result</h3>
               <div className={styles.diagnosisBox}>
-                {formatDiagnosis(result.diagnosis)}
+                <span className={styles.diagnosisLabel}>Predicted Condition:</span>
+                <span className={styles.diagnosisValue}>{result.diagnosis}</span>
+              </div>
+
+              <div className={styles.confidenceSection}>
+                <h4>Confidence Scores</h4>
+                {result.confidences && result.confidences.length > 0 ? (
+                  <div className={styles.confidenceList}>
+                    {result.confidences.map((item, index) => (
+                      <div key={index} className={styles.confidenceItem}>
+                        <span className={styles.confidenceLabel}>{item.label}</span>
+                        <div className={styles.confidenceBar}>
+                          <div 
+                            className={styles.confidenceFill}
+                            style={{ width: `${(item.confidence || 0) * 100}%` }}
+                          />
+                        </div>
+                        <span className={styles.confidenceValue}>
+                          {((item.confidence || 0) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className={styles.noConfidence}>No confidence data available</p>
+                )}
               </div>
 
               <div className={styles.resultActions}>
