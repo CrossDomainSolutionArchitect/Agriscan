@@ -4,7 +4,7 @@ import styles from './Hero.module.css'
 function Hero() {
   return (
     <section className={styles.hero}>
-      <div className={styles.badge}>Built in Mpumalanga · Trained for Southern African Crops</div>
+      <div className={styles.badge}>Built in SA · Trained for Southern African conditions</div>
       <h1>AI-Powered Diagnostics <br /><span>for Southern Africa</span></h1>
       <p className={styles.subtitle}>
         Computer vision models trained to detect crop disease and skin conditions
