@@ -1,136 +1,33 @@
 .howItWorks {
-  padding: 0;
+  padding: 3rem 0;
   background: #ffffff;
+}
+
+.imageWrapper {
+  width: 100%;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
-.backgroundImage {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.bannerImage {
   width: 100%;
-  min-height: 500px;
-  position: relative;
-}
-
-.overlay {
-  background: rgba(0, 0, 0, 0.55);
-  padding: 4rem 0;
-  width: 100%;
-  min-height: 500px;
-  display: flex;
-  align-items: center;
-}
-
-.howItWorks h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-}
-
-.step {
-  text-align: center;
-  padding: 1.5rem;
-  color: #ffffff;
+  height: auto;
+  display: block;
+  border-radius: 12px;
   transition: transform 0.3s ease;
 }
 
-.step:hover {
-  transform: translateY(-6px);
-}
-
-.number {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  color: #ffffff;
-  font-size: 1.6rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  transition: all 0.3s ease;
-}
-
-.step:hover .number {
-  background: rgba(255, 255, 255, 0.35);
-  transform: scale(1.1);
-  border-color: #ffffff;
-}
-
-.step h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-  letter-spacing: 0.3px;
-}
-
-.step p {
-  font-size: 0.95rem;
-  opacity: 0.85;
-  max-width: 280px;
-  margin: 0 auto;
-  color: #f0f0f0;
-  line-height: 1.6;
+.bannerImage:hover {
+  transform: scale(1.01);
 }
 
 /* Responsive */
-@media (max-width: 900px) {
-  .steps {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  .backgroundImage {
-    min-height: 450px;
-  }
-  .overlay {
-    min-height: 450px;
-    padding: 3rem 0;
-  }
-}
-
 @media (max-width: 600px) {
-  .backgroundImage {
-    min-height: 650px;
-  }
-  .overlay {
-    min-height: 650px;
+  .howItWorks {
     padding: 2rem 0;
   }
-  .howItWorks h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-  .steps {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .step {
-    padding: 1rem;
-  }
-  .number {
-    width: 44px;
-    height: 44px;
-    font-size: 1.2rem;
-  }
-  .step h3 {
-    font-size: 1.1rem;
-  }
-  .step p {
-    font-size: 0.85rem;
+  .imageWrapper {
+    border-radius: 8px;
   }
 }
