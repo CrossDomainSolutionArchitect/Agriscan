@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>cdsa.ai Studio</title>
+    <script type="text/javascript">
+      // Get the path from the current URL
+      var path = window.location.pathname;
+      // Redirect to the root index.html with the path as a query parameter
+      window.location.replace(
+        "/?path=" + encodeURIComponent(path) + window.location.search + window.location.hash
+      );
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/">cdsa.ai Studio</a>...</p>
+  </body>
+</html>
