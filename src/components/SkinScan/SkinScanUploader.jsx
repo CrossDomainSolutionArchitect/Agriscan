@@ -1,14 +1,32 @@
-import React, { useState, useRef } from 'react'
-import { predictSkinCondition } from '../../services/skinscanService'
+import React, { useState, useRef, useEffect } from 'react'
+import { predictSkinCondition, getHealthStatus } from '../../services/skinscanService'
 import styles from './SkinScanUploader.module.css'
 
 function SkinScanUploader() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [isInitializing, setIsInitializing] = useState(true)
+  const [isHealthy, setIsHealthy] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
   const fileInputRef = useRef(null)
+
+  // Check API health on component mount
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const status = await getHealthStatus()
+        setIsHealthy(status.status === 'healthy')
+      } catch (err) {
+        console.warn('Health check failed:', err)
+        setIsHealthy(false)
+      } finally {
+        setIsInitializing(false)
+      }
+    }
+    checkHealth()
+  }, [])
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0]
@@ -60,6 +78,35 @@ function SkinScanUploader() {
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
+  }
+
+  // Show loader while initializing
+  if (isInitializing) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.initializingLoader}>
+          <div className={styles.spinner}></div>
+          <p>Loading SkinScan...</p>
+          <p className={styles.initializingNote}>Connecting to AI model</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show API unavailable message if health check fails
+  if (!isHealthy && !error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.apiUnavailable}>
+          <span className={styles.apiUnavailableIcon}>⚠️</span>
+          <h3>AI Service Unavailable</h3>
+          <p>The SkinScan AI model is currently waking up. Please wait a moment and refresh the page.</p>
+          <button onClick={() => window.location.reload()} className={styles.retryBtn}>
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -118,7 +165,7 @@ function SkinScanUploader() {
             </div>
           )}
 
-          {/* Results */}
+          {/* Results - IDENTICAL to SkinScan */}
           {result && !loading && (
             <div className={styles.results}>
               <h3>Diagnosis Result</h3>
