@@ -7,7 +7,7 @@ export const PRODUCTS = [
   {
     title: 'Agriscan',
     status: 'In Development',
-    image: 'https://images.unsplash.com/photo-1602867741746-6df80f40b3f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFybWVyc3xlbnwwfHwwfHx8MA%3D%3D',
+    image: 'images/agriscan.png',
     description: 'AI plant disease detection from a single photo. Trained on 38 crop diseases and validated for Southern African conditions.',
     tech: 'Plant disease screening tool · agricultural research use',
     route: '/agriscan',
@@ -15,7 +15,7 @@ export const PRODUCTS = [
   {
     title: 'SkinScan',
     status: 'In Development',
-    image: 'https://images.unsplash.com/photo-1730288951113-9cc087c14b83?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGVybWF0b2xvZ3l8ZW58MHx8MHx8fDA%3D',
+    image: 'images/skin_scan.png',
     description: 'AI dermatology assistant for acne, eczema, and psoriasis — built for remote diagnosis support.',
     tech: 'Screening tool · not a medical diagnosis',
     route: '/skinscan',
