@@ -1,0 +1,106 @@
+.loaderContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+.loaderContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: fadeIn 0.6s ease;
+}
+
+.loaderLogo {
+  height: 80px;
+  width: auto;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.loaderBar {
+  width: 200px;
+  height: 4px;
+  background: #eaeaea;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loaderFill {
+  height: 100%;
+  width: 0%;
+  background: #1a1a1a;
+  border-radius: 2px;
+  animation: loadBar 1.8s ease-in-out infinite;
+}
+
+.loaderText {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes loadBar {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Optional: Add a subtle gradient background for elegance */
+.loaderContainer {
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+}
+
+/* Dark mode support (if you add it later) */
+@media (prefers-color-scheme: dark) {
+  .loaderContainer {
+    background: #1a1a1a;
+  }
+  .loaderBar {
+    background: #333;
+  }
+  .loaderFill {
+    background: #f4c542; /* Gold accent for dark mode */
+  }
+  .loaderText {
+    color: #aaa;
+  }
+}

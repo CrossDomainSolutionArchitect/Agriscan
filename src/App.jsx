@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import Loader from './components/Loader/Loader'
 import LandingPage from './pages/LandingPage/LandingPage'
 import AgriscanPage from './pages/AgriscanPage/AgriscanPage'
 import SkinScanPage from './pages/SkinScanPage/SkinScanPage'
@@ -11,8 +12,17 @@ import CookiePolicy from './pages/CookiePolicy/CookiePolicy'
 
 const ProtectedRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useUser()
-  if (!isLoaded) return <div className="loading-screen">Loading...</div>
-  if (!isSignedIn) return <Navigate to="/" replace />
+  
+  // Show loader while Clerk is initializing
+  if (!isLoaded) {
+    return <Loader />
+  }
+  
+  // Redirect to home if not signed in
+  if (!isSignedIn) {
+    return <Navigate to="/" replace />
+  }
+  
   return children
 }
 
