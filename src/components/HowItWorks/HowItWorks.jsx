@@ -6,19 +6,19 @@ const steps = [
     step: '1',
     title: 'Choose Your Tool',
     desc: 'Select Agriscan or SkinScan.',
-    image: '/images/choose-tool.png', // adjust filename as needed
+    image: '/images/choose_tool.png', // adjust filename as needed
   },
   {
     step: '2',
     title: 'Capture or Upload',
     desc: 'Take a photo with your phone.',
-    image: '/images/capture-upload.png',
+    image: '/images/upload.png',
   },
   {
     step: '3',
     title: 'Get Instant AI Insights',
     desc: 'Receive a diagnosis and recommendations.',
-    image: '/images/get-insights.png',
+    image: '/images/insights.png',
   },
 ]
 
