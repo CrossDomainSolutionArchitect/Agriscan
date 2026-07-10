@@ -2,6 +2,7 @@
   padding: 4rem 0;
   background: #ffffff;
 }
+
 .howItWorks h2 {
   text-align: center;
   font-size: 2.5rem;
@@ -9,30 +10,123 @@
   margin-bottom: 3rem;
   color: #1a1a1a;
 }
+
 .steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
+
 .step {
-  text-align: center;
-  padding: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #f8f9fa;
 }
+
+.step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stepImage {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 aspect ratio */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.step:hover .overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
 .number {
-  background: #1a1a1a;
-  color: #fff;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 auto 1rem;
+  margin-bottom: 0.75rem;
+  transition: transform 0.3s ease;
 }
-.step h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #1a1a1a; }
-.step p { color: #4a4a4a; }
-@media (max-width: 768px) {
-  .steps { grid-template-columns: 1fr; gap: 1.5rem; }
+
+.step:hover .number {
+  transform: scale(1.1);
+}
+
+.overlay h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.overlay p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  max-width: 250px;
+  margin: 0 auto;
+  color: #f0f0f0;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .howItWorks {
+    padding: 3rem 0;
+  }
+  .howItWorks h2 {
+    font-size: 2rem;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .stepImage {
+    padding-top: 60%; /* Slightly less tall on mobile */
+  }
+  .overlay h3 {
+    font-size: 1.1rem;
+  }
+  .overlay p {
+    font-size: 0.85rem;
+  }
+  .number {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 }
