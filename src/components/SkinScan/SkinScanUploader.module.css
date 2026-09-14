@@ -16,6 +16,84 @@
   margin-bottom: 2rem;
 }
 
+.checkOptions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.checkOption {
+  min-height: 170px;
+  padding: 1rem;
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.optionNumber {
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.checkOption h3 {
+  margin: 1.25rem 0 0.4rem;
+  color: #1a1a1a;
+  font-size: 1.3rem;
+}
+
+.checkOption p {
+  color: #4a4a4a;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.makeupOption {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 14px;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.kicker {
+  color: #d6e4c8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.makeupOption h3 {
+  margin-top: 0.55rem;
+  font-size: 1.35rem;
+  line-height: 1.15;
+}
+
+.makeupOption p {
+  color: #ddd;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.demoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  padding: 0.7rem 0.9rem;
+  border-radius: 9px;
+  background: #d6e4c8;
+  color: #1a1a1a;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
 /* Upload Area */
 .uploadArea {
   border: 2px dashed #ccc;
@@ -298,6 +376,8 @@
 
 @media (max-width: 600px) {
   .container { padding: 1rem; }
+  .checkOptions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .makeupOption { grid-template-columns: 1fr; gap: 1rem; }
   .diagnosisBox { flex-direction: column; gap: 0.5rem; text-align: center; }
   .confidenceItem { flex-wrap: wrap; }
   .confidenceLabel { min-width: 80px; font-size: 0.8rem; }

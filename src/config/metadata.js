@@ -5,20 +5,18 @@ export const CONTACT_EMAIL = 'hello@cdsa.tech'
 
 export const PRODUCTS = [
   {
-    title: 'Agriscan',
+    title: 'Healthcare',
     status: 'In Development',
-    image: 'images/agriscan.png',
-    description: 'AI plant disease detection from a single photo. Trained on 38 crop diseases and validated for Southern African conditions.',
-    tech: 'Plant disease screening tool · agricultural research use',
-    route: '/agriscan',
+    description: 'Support clearer skin, face, nails, hair and teeth analysis from a single image.',
+    tech: 'SkinScan · screening support, not a medical diagnosis',
+    route: '/skinscan',
   },
   {
-    title: 'SkinScan',
+    title: 'Agriscan',
     status: 'In Development',
-    image: 'images/skin_scan.png',
-    description: 'AI dermatology assistant for acne, eczema, and psoriasis — built for remote diagnosis support.',
-    tech: 'Screening tool · not a medical diagnosis',
-    route: '/skinscan',
+    description: 'Identify crop disease from a field photo and make more informed growing decisions.',
+    tech: 'Agriscan · trained for Southern African conditions',
+    route: '/agriscan',
   },
 ]
 

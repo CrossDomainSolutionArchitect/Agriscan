@@ -7,13 +7,12 @@ function ProductShowcase() {
   return (
     <section id="products" className={styles.showcase}>
       <div className="container">
-        <h2>Our Solutions</h2>
+        <h2>Projects</h2>
         <div className={styles.grid}>
           {PRODUCTS.map((product) => (
             <PrototypeCard
               key={product.title}
               title={product.title}
-              icon=""
               description={product.description}
               route={product.route}
               image={product.image}

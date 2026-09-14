@@ -6,14 +6,15 @@ import App from './App.jsx'
 import './styles/global.css'
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-if (!clerkPubKey) throw new Error('Missing Clerk key')
+
+const app = (
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ClerkProvider>
-  </React.StrictMode>
+  clerkPubKey ? <ClerkProvider publishableKey={clerkPubKey}>{app}</ClerkProvider> : app
 )

@@ -14,6 +14,8 @@ const CookiePolicy = lazy(() => import('./pages/CookiePolicy/CookiePolicy'))
 const PartnerPage = lazy(() => import('./pages/PartnerPage/PartnerPage')) // NEW
 
 const ProtectedRoute = ({ children }) => {
+  if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
+
   const { isLoaded, isSignedIn } = useUser()
   if (!isLoaded) return <Loader />
   if (!isSignedIn) return <Navigate to="/" replace />

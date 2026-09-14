@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import { useUser, useClerk } from '@clerk/clerk-react'
 import styles from './Navbar.module.css'
 
-function Navbar() {
+const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY)
+
+function AuthenticatedNavbar() {
   const { isSignedIn, user } = useUser()
   const { signOut } = useClerk()
 
@@ -34,6 +36,23 @@ function Navbar() {
       </div>
     </nav>
   )
+}
+
+function Navbar() {
+  if (!clerkEnabled) {
+    return (
+      <nav className={styles.navbar}>
+        <div className={`container ${styles.navInner}`}>
+          <a href="/" className={styles.logoLink}>
+            <img src="/cdsa-logo.png" alt="cdsa.ai Studio" className={styles.logoImg} />
+          </a>
+          <span className={styles.guest}>Explore our AI tools</span>
+        </div>
+      </nav>
+    )
+  }
+
+  return <AuthenticatedNavbar />
 }
 
 export default Navbar

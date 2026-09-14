@@ -111,10 +111,42 @@ function SkinScanUploader() {
 
   return (
     <div className={styles.container}>
-      <h2>🔬 SkinScan</h2>
+      <h2>What do you want to check?</h2>
       <p className={styles.subtitle}>
-        Upload a photo of a skin condition for AI analysis
+        Choose an area to explore with AI-powered analysis and recommendations.
       </p>
+
+      <div className={styles.checkOptions}>
+        <article className={styles.checkOption}>
+          <span className={styles.optionNumber}>.01</span>
+          <h3>Face</h3>
+          <p>Analysis and recommendations for improving facial skin</p>
+        </article>
+        <article className={styles.checkOption}>
+          <span className={styles.optionNumber}>.02</span>
+          <h3>Nails</h3>
+          <p>Professional analysis of nail condition in 5 minutes</p>
+        </article>
+        <article className={styles.checkOption}>
+          <span className={styles.optionNumber}>.03</span>
+          <h3>Skin</h3>
+          <p>Analysis and recommendations for improving skin</p>
+        </article>
+        <article className={styles.checkOption}>
+          <span className={styles.optionNumber}>.04</span>
+          <h3>Hair</h3>
+          <p>Professional analysis of hair condition in 5 minutes</p>
+        </article>
+      </div>
+
+      <div className={styles.makeupOption}>
+        <div>
+          <span className={styles.kicker}>Try on makeup online</span>
+          <h3>Find your perfect shade in real time.</h3>
+        </div>
+        <p>Upload a photo or use your webcam to find the perfect shade of lipstick, eye shadow and blush in real time.<br /><br />Find out what suits you and create your own unique look without breaking the bank. Try it now and find your dream makeup!</p>
+        <a href="#products" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+      </div>
 
       {/* Upload Area */}
       {!preview && (
