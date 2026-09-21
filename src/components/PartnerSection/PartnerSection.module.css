@@ -1,14 +1,16 @@
 .partner {
-  background: #ffffff;
+  background: #f4f2ec;
   padding: 4rem 0;
   text-align: center;
   border-top: 1px solid #eaeaea;
 }
 .partner h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
   color: #1a1a1a;
-  margin-bottom: 1rem;
+  margin: 0 auto 1.5rem;
 }
 .partner p {
   max-width: 600px;

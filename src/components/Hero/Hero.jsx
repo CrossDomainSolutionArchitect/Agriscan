@@ -4,7 +4,7 @@ import styles from './Hero.module.css'
 function Hero() {
   const [activeSlide, setActiveSlide] = useState(0)
   const slides = [
-    { title: 'Healthcare', image: '/images/Care.jpg', description: 'Clearer insight for every patient.' },
+    { title: 'Healthcare', image: '/images/healtK1.jpg', description: 'Clearer insight for every patient.' },
     { title: 'Agriculture', image: '/images/maize1.jpg', description: 'Healthier crops, stronger harvests.' },
     { title: 'Universities', image: '/images/LLb.jpg', description: 'Turn research into practical action.' },
     { title: 'Retail', image: '/images/AIScan.jpg', description: 'Smarter decisions at every touchpoint.' },
@@ -29,7 +29,7 @@ function Hero() {
             and turn uncertainty into your next best step.
           </p>
           <div className={styles.ctaGroup}>
-            <a href="#products" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></a>
+            <a href="/partner" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></a>
             
           </div>
          

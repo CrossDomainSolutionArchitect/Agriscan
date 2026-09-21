@@ -5,7 +5,7 @@ export const CONTACT_EMAIL = 'hello@cdsa.tech'
 
 export const PRODUCTS = [
   {
-    title: 'Healthcare',
+    title: 'SkinScan',
     status: 'In Development',
     description: 'Support clearer skin, face, nails, hair and teeth analysis from a single image.',
     tech: 'SkinScan · screening support, not a medical diagnosis',

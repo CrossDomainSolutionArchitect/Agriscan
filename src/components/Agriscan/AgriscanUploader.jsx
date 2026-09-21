@@ -2,6 +2,13 @@ import React, { useState, useRef, useEffect } from 'react'
 import { predictPlantDisease, getHealthStatus } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
 
+const crops = [
+  { number: '.01', title: 'Maize', image: '/images/Maizee.jpg' },
+  { number: '.02', title: 'Tomato', image: '/images/Tomatos.jpg' },
+  { number: '.03', title: 'Citrus', image: '/images/Citrus.jpg' },
+  { number: '.04', title: 'Potato', image: '/images/Potato.jpg' },
+]
+
 function AgriscanUploader() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
@@ -111,10 +118,22 @@ function AgriscanUploader() {
 
   return (
     <div className={styles.container}>
-      <h2>🌾 Agriscan</h2>
+      <h2>What do you want to check?</h2>
       <p className={styles.subtitle}>
-        Upload a photo of a plant leaf for AI disease detection
+        Choose an area to explore with AI-powered analysis and recommendations.
       </p>
+
+      <div className={styles.cropOptions}>
+        {crops.map((crop) => (
+          <article className={styles.cropOption} key={crop.title}>
+            <img src={crop.image} alt={`${crop.title} crop`} loading="lazy" />
+            <div className={styles.cropContent}>
+              <span className={styles.cropNumber}>{crop.number}</span>
+              <h3>{crop.title}</h3>
+            </div>
+          </article>
+        ))}
+      </div>
 
       {/* Upload Area */}
       {!preview && (

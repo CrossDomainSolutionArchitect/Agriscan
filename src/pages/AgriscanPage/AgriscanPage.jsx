@@ -8,8 +8,6 @@ function AgriscanPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <Link to="/" className={styles.back}>← Back to home</Link>
-        <h1>🌾 Agriscan</h1>
-        <p>AI plant disease detection for Southern African farmers</p>
       </div>
       
       <AgriscanUploader />

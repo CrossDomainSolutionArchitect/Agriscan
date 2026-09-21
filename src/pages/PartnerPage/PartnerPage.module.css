@@ -5,15 +5,27 @@
 }
 
 .backLink {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 12px;
+  background: #171916;
+  color: #ffffff;
   margin-bottom: 1.5rem;
-  color: #4a4a4a;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .backLink:hover {
-  text-decoration: underline;
+  background: #394438;
+  transform: translateY(-2px);
+}
+
+.backLink:focus-visible {
+  outline: 3px solid #71846c;
+  outline-offset: 3px;
 }
 
 .header {

@@ -8,8 +8,6 @@ function SkinScanPage() {
     <div className={styles.page}>
       <div className={styles.header}>
         <Link to="/" className={styles.back}>← Back to home</Link>
-        <h1>🔬 SkinScan</h1>
-        <p>AI dermatology assistant for acne, eczema, and psoriasis</p>
       </div>
       
       <SkinScanUploader />

@@ -72,8 +72,9 @@ function PartnerPage() {
         <Link to="/" className={styles.backLink}>← Back to Home</Link>
 
         <div className={styles.header}>
-          <h1>🤝 Partner with Us</h1>
-          <p>Help us validate Agriscan for Southern African agriculture</p>
+          <h1>Get demo</h1>
+          <p>AI Diagnostic
+Studio</p>
         </div>
 
         <div className={styles.formWrapper}>

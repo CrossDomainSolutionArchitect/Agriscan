@@ -38,8 +38,8 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/agriscan" element={<ProtectedRoute><AgriscanPage /></ProtectedRoute>} />
-        <Route path="/skinscan" element={<ProtectedRoute><SkinScanPage /></ProtectedRoute>} />
+        <Route path="/agriscan" element={<AgriscanPage />} />
+        <Route path="/skinscan" element={<SkinScanPage />} />
         <Route path="/partner" element={<PartnerPage />} /> {/* NEW */}
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />

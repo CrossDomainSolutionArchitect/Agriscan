@@ -6,7 +6,8 @@ function PartnerSection() {
   return (
     <section className={styles.partner}>
       <div className="container">
-        <h2>Partner With Us</h2>
+        <h2>Let's build
+something together!</h2>
         <p>
           Validating AI for Southern Africa. We're collaborating with agricultural experts and dermatologists to fine‑tune our models for local conditions.
         </p>

@@ -1,32 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { predictSkinCondition, getHealthStatus } from '../../services/skinscanService'
+import React, { useState, useRef } from 'react'
+import { predictSkinCondition } from '../../services/skinscanService'
 import styles from './SkinScanUploader.module.css'
+
+const checkOptions = [
+  { number: '.01', title: 'Teeth', description: 'Analysis and recommendations for improving facial skin', image: '/images/teeth.jpg' },
+  { number: '.02', title: 'Nails', description: 'Professional analysis of nail condition in 5 minutes', image: '/images/Nailts.jpg' },
+  { number: '.03', title: 'Skin', description: 'Analysis and recommendations for improving skin', image: '/images/Skin.jpg' },
+  { number: '.04', title: 'Hair', description: 'Professional analysis of hair condition in 5 minutes', image: '/images/Hair.jpg' },
+]
 
 function SkinScanUploader() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [isInitializing, setIsInitializing] = useState(true)
-  const [isHealthy, setIsHealthy] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
   const fileInputRef = useRef(null)
-
-  // Check API health on component mount
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        const status = await getHealthStatus()
-        setIsHealthy(status.status === 'healthy')
-      } catch (err) {
-        console.warn('Health check failed:', err)
-        setIsHealthy(false)
-      } finally {
-        setIsInitializing(false)
-      }
-    }
-    checkHealth()
-  }, [])
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0]
@@ -80,35 +69,6 @@ function SkinScanUploader() {
     }
   }
 
-  // Show loader while initializing
-  if (isInitializing) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.initializingLoader}>
-          <div className={styles.spinner}></div>
-          <p>Loading SkinScan...</p>
-          <p className={styles.initializingNote}>Connecting to AI model</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Show API unavailable message if health check fails
-  if (!isHealthy && !error) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.apiUnavailable}>
-          <span className={styles.apiUnavailableIcon}>⚠️</span>
-          <h3>AI Service Unavailable</h3>
-          <p>The SkinScan AI model is currently waking up. Please wait a moment and refresh the page.</p>
-          <button onClick={() => window.location.reload()} className={styles.retryBtn}>
-            🔄 Refresh
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className={styles.container}>
       <h2>What do you want to check?</h2>
@@ -117,26 +77,14 @@ function SkinScanUploader() {
       </p>
 
       <div className={styles.checkOptions}>
-        <article className={styles.checkOption}>
-          <span className={styles.optionNumber}>.01</span>
-          <h3>Face</h3>
-          <p>Analysis and recommendations for improving facial skin</p>
-        </article>
-        <article className={styles.checkOption}>
-          <span className={styles.optionNumber}>.02</span>
-          <h3>Nails</h3>
-          <p>Professional analysis of nail condition in 5 minutes</p>
-        </article>
-        <article className={styles.checkOption}>
-          <span className={styles.optionNumber}>.03</span>
-          <h3>Skin</h3>
-          <p>Analysis and recommendations for improving skin</p>
-        </article>
-        <article className={styles.checkOption}>
-          <span className={styles.optionNumber}>.04</span>
-          <h3>Hair</h3>
-          <p>Professional analysis of hair condition in 5 minutes</p>
-        </article>
+        {checkOptions.map((option) => (
+          <article className={styles.checkOption} key={option.title}>
+            <img src={option.image} alt={`${option.title} analysis`} className={styles.optionImage} loading="lazy" />
+            <span className={styles.optionNumber}>{option.number}</span>
+            <h3>{option.title}</h3>
+            <p>{option.description}</p>
+          </article>
+        ))}
       </div>
 
       <div className={styles.makeupOption}>
@@ -145,7 +93,7 @@ function SkinScanUploader() {
           <h3>Find your perfect shade in real time.</h3>
         </div>
         <p>Upload a photo or use your webcam to find the perfect shade of lipstick, eye shadow and blush in real time.<br /><br />Find out what suits you and create your own unique look without breaking the bank. Try it now and find your dream makeup!</p>
-        <a href="#products" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+        <a href="/partner" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
       </div>
 
       {/* Upload Area */}
