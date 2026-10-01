@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { predictSkinCondition } from '../../services/skinscanService'
 import styles from './SkinScanUploader.module.css'
 
@@ -15,33 +15,6 @@ function SkinScanUploader() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
-  const fileInputRef = useRef(null)
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      setImage(file)
-      setPreview(URL.createObjectURL(file))
-      setResult(null)
-      setError(null)
-    }
-  }
-
-  const handleDragOver = (event) => {
-    event.preventDefault()
-  }
-
-  const handleDrop = (event) => {
-    event.preventDefault()
-    const file = event.dataTransfer.files[0]
-    if (file && file.type.startsWith('image/')) {
-      setImage(file)
-      setPreview(URL.createObjectURL(file))
-      setResult(null)
-      setError(null)
-    }
-  }
-
   const handleAnalyze = async () => {
     if (!image) return
 
@@ -64,9 +37,6 @@ function SkinScanUploader() {
     setPreview(null)
     setResult(null)
     setError(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
   }
 
   return (
@@ -96,26 +66,10 @@ function SkinScanUploader() {
         <a href="/partner" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
       </div>
 
-      {/* Upload Area */}
       {!preview && (
-        <div 
-          className={styles.uploadArea}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current.click()}
-        >
-          <div className={styles.uploadContent}>
-            <span className={styles.uploadIcon}>📷</span>
-            <p>Drag & drop an image here, or click to browse</p>
-            <p className={styles.uploadHint}>Supports JPG, PNG, WEBP</p>
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className={styles.fileInput}
-          />
+        <div className={styles.uploadUnavailable} role="status">
+          <span className={styles.uploadIcon}>📷</span>
+          <p>Image upload is currently unavailable.</p>
         </div>
       )}
 

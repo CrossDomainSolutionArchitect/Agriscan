@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { predictPlantDisease, getHealthStatus } from '../../services/agriscanService'
+import React, { useState } from 'react'
+import { predictPlantDisease } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
 
 const crops = [
@@ -13,53 +13,8 @@ function AgriscanUploader() {
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [isInitializing, setIsInitializing] = useState(true)
-  const [isHealthy, setIsHealthy] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
-  const fileInputRef = useRef(null)
-
-  // Check API health on component mount
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        const status = await getHealthStatus()
-        setIsHealthy(status.status === 'healthy')
-      } catch (err) {
-        console.warn('Health check failed:', err)
-        setIsHealthy(false)
-      } finally {
-        setIsInitializing(false)
-      }
-    }
-    checkHealth()
-  }, [])
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      setImage(file)
-      setPreview(URL.createObjectURL(file))
-      setResult(null)
-      setError(null)
-    }
-  }
-
-  const handleDragOver = (event) => {
-    event.preventDefault()
-  }
-
-  const handleDrop = (event) => {
-    event.preventDefault()
-    const file = event.dataTransfer.files[0]
-    if (file && file.type.startsWith('image/')) {
-      setImage(file)
-      setPreview(URL.createObjectURL(file))
-      setResult(null)
-      setError(null)
-    }
-  }
-
   const handleAnalyze = async () => {
     if (!image) return
 
@@ -82,38 +37,6 @@ function AgriscanUploader() {
     setPreview(null)
     setResult(null)
     setError(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-  }
-
-  // Show loader while initializing
-  if (isInitializing) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.initializingLoader}>
-          <div className={styles.spinner}></div>
-          <p>Loading Agriscan...</p>
-          <p className={styles.initializingNote}>Connecting to AI model</p>
-        </div>
-      </div>
-    )
-  }
-
-  // Show API unavailable message if health check fails
-  if (!isHealthy && !error) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.apiUnavailable}>
-          <span className={styles.apiUnavailableIcon}>⚠️</span>
-          <h3>AI Service Unavailable</h3>
-          <p>The Agriscan AI model is currently waking up. Please wait a moment and refresh the page.</p>
-          <button onClick={() => window.location.reload()} className={styles.retryBtn}>
-            🔄 Refresh
-          </button>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -135,26 +58,19 @@ function AgriscanUploader() {
         ))}
       </div>
 
-      {/* Upload Area */}
+      <div className={styles.requestOption}>
+        <div>
+          <span className={styles.kicker}>Bring Agriscan to your farm</span>
+          <h3>Smarter crop health starts here.</h3>
+        </div>
+        <p>Get AI-powered crop disease analysis and recommendations tailored to your operation. Request a demo to explore Agriscan with your team.</p>
+        <a href="/partner" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+      </div>
+
       {!preview && (
-        <div 
-          className={styles.uploadArea}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => fileInputRef.current.click()}
-        >
-          <div className={styles.uploadContent}>
-            <span className={styles.uploadIcon}>🌿</span>
-            <p>Drag & drop a leaf image here, or click to browse</p>
-            <p className={styles.uploadHint}>Supports JPG, PNG, WEBP</p>
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className={styles.fileInput}
-          />
+        <div className={styles.uploadUnavailable} role="status">
+          <span className={styles.uploadIcon}>🌿</span>
+          <p>Image upload is currently unavailable.</p>
         </div>
       )}
 
