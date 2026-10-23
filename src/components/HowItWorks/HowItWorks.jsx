@@ -50,7 +50,7 @@ function HowItWorks() {
             <div className={styles.results}>
               <p>Crop produce increases by <strong>30-50%</strong></p>
               <p>Sales growth by <strong>10-30%</strong></p>
-              <a className={styles.demoButton} href="/#/agriscan">
+              <a className={styles.demoButton} href="/agriscan">
                 <span>Go to demo</span>
                 <span aria-hidden="true">↗</span>
               </a>
