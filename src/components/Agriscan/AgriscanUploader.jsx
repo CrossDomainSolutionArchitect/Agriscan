@@ -177,7 +177,7 @@ function AgriscanUploader() {
           <h3>Smarter crop health starts here.</h3>
         </div>
         <p>Get AI-powered crop disease analysis and recommendations tailored to your operation. Request a demo to explore Agriscan with your team.</p>
-        <a href="/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+        <a href="/#/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
       </div>
 
       {!preview && (

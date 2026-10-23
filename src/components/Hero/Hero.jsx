@@ -13,7 +13,7 @@ function Hero() {
             and turn uncertainty into your next best step.
           </p>
           <div className={styles.ctaGroup}>
-            <a href="/agriscan" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></a>
+            <a href="/#/agriscan" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></a>
             
           </div>
          
