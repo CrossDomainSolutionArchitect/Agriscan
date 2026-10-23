@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "homepage": "https://cdsa.tech",
+  "homepage": "https://agri-scan.co.za",
   "dependencies": {
     "@clerk/clerk-react": "^5.61.3",
     "@gradio/client": "^2.3.1",

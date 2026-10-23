@@ -63,14 +63,14 @@ This section has moved here: [https://vitejs.dev/guide/build.html#advanced-base-
 
 ### Deployment
 
-The site is deployed to GitHub Pages from the `dist` build output. Push to
-`main` to run the Pages workflow, or run `npm run build` locally and publish
-the generated `dist` directory. Do not configure GitHub Pages to serve the
-repository root: the root `index.html` is the Vite development entry point
-and references `/src/main.jsx`.
+The source code lives on `main`. Each push to `main` builds the application
+and publishes only the generated `dist` directory to the `gh-pages` branch.
+Configure the repository's GitHub Pages source as `gh-pages` at the repository
+root (`/`).
 
-The Vite base path is `/` because this project uses the custom domain
-`cdsa.tech`. If the custom domain is removed and the repository is served at
+The site is available at [agri-scan.co.za](https://agri-scan.co.za). The Vite
+base path is `/` because the project uses this custom domain. If the custom
+domain is removed and the repository is served at
 `/<repository-name>/`, update the base path in `vite.config.js` accordingly.
 
 ### Troubleshooting
