@@ -117,7 +117,7 @@ function TermsConditions() {
           <h2>11. Contact Us</h2>
           <p>
             If you have any questions about these Terms &amp; Conditions, please contact us at:<br />
-            📧 <a href="mailto:hello@cdsa.tech">hello@cdsa.tech</a>
+            📧 <a href="mailto:agriscan@cdsa.tech">agriscan@cdsa.tech</a>
           </p>
         </section>
       </div>

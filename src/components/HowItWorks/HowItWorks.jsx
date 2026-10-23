@@ -14,11 +14,11 @@ function HowItWorks() {
             <article className={styles.step}>
               <div className={styles.stepHeading}>
                 <span className={styles.stepNumber}>.01</span>
-                <h3>User scans the teeth, face, nails & hair</h3>
+                <h3>Farmer scans a crop leaf</h3>
               </div>
               <div className={styles.imageWrapper}>
                 <img
-                  src="/images/t-t.png"
+                  src="/images/Maize_scan1.jpg"
                   alt="User scans their face with a phone"
                   className={styles.stepImage}
                   loading="lazy"
@@ -33,7 +33,7 @@ function HowItWorks() {
               </div>
               <div className={styles.imageWrapper}>
                 <img
-                  src="/images/removed-back.jpg"
+                  src="/images/Maize_scan_results1.jpg"
                   alt="Personalized recommendations shown by category"
                   className={styles.stepImage}
                   loading="lazy"
@@ -48,9 +48,9 @@ function HowItWorks() {
               <h3>Turn insight<br />into growth.</h3>
             </div>
             <div className={styles.results}>
-              <p>Average check increase by <strong>29%</strong></p>
-              <p>Sales growth by <strong>11%</strong></p>
-              <a className={styles.demoButton} href="/partner">
+              <p>Crop produce increases by <strong>30-50%</strong></p>
+              <p>Sales growth by <strong>10-30%</strong></p>
+              <a className={styles.demoButton} href="/agriscan">
                 <span>Go to demo</span>
                 <span aria-hidden="true">↗</span>
               </a>

@@ -89,7 +89,7 @@ function Disclaimer() {
           <h2>7. Contact Us</h2>
           <p>
             If you have any questions about this disclaimer, please contact us at:<br />
-            📧 <a href="mailto:hello@cdsa.tech">hello@cdsa.tech</a>
+            📧 <a href="mailto:agriscan@cdsa.tech">agriscan@cdsa.tech</a>
           </p>
         </section>
       </div>

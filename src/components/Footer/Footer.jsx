@@ -19,7 +19,7 @@ function Footer() {
         {/* Contact & Copyright */}
         <div className={styles.bottom}>
           <p className={styles.contact}>
-            📧 <a href="mailto:hello@cdsa.tech">hello@cdsa.tech</a>
+            📧 <a href="mailto:agriscan@cdsa.tech">agriscan@cdsa.tech</a>
           </p>
           <p className={styles.copyright}>
             &copy; {currentYear} cdsa.ai Studio — AI for Southern Africa

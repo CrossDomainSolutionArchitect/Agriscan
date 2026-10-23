@@ -1,7 +1,7 @@
 // Application metadata and configuration
 
 export const APP_NAME = 'cdsa.ai Studio'
-export const CONTACT_EMAIL = 'hello@cdsa.tech'
+export const CONTACT_EMAIL = 'agriscan@cdsa.tech'
 
 export const PRODUCTS = [
   {

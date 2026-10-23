@@ -36,7 +36,7 @@ function PartnerPage() {
       if (response.ok) {
         setStatus({
           type: 'success',
-          message: '✓ Thank you for partnering with us! We\'ll respond within 48 hours at hello@cdsa.tech',
+          message: '✓ Thank you for partnering with us! We\'ll respond within 48 hours at agriscan@cdsa.tech',
         })
         setFormData({
           name: '',
@@ -53,7 +53,7 @@ function PartnerPage() {
       } else {
         setStatus({
           type: 'error',
-          message: '⚠️ Something went wrong. Please try again or email us directly at hello@cdsa.tech',
+          message: '⚠️ Something went wrong. Please try again or email us directly at agriscan@cdsa.tech',
         })
       }
     } catch (error) {
@@ -174,7 +174,7 @@ Studio</p>
               {isSubmitting ? 'Sending...' : 'Send Partnership Request →'}
             </button>
             <p className={styles.formNote}>
-              We'll respond within 48 hours from <strong>hello@cdsa.tech</strong>
+              We'll respond within 48 hours from <strong>agriscan@cdsa.tech</strong>
             </p>
           </form>
         </div>

@@ -85,7 +85,7 @@ function PrivacyPolicy() {
             <li><strong>Objection:</strong> Object to processing based on legitimate interests.</li>
             <li><strong>Withdraw Consent:</strong> Withdraw your consent at any time.</li>
           </ul>
-          <p>To exercise these rights, contact us at <a href="mailto:hello@cdsa.tech">hello@cdsa.tech</a>.</p>
+          <p>To exercise these rights, contact us at <a href="mailto:agriscan@cdsa.tech">agriscan@cdsa.tech</a>.</p>
         </section>
 
         <section>
@@ -113,7 +113,7 @@ function PrivacyPolicy() {
           <h2>11. Contact Us</h2>
           <p>
             For any questions or concerns about this Privacy Policy, please contact us at:<br />
-            📧 <a href="mailto:hello@cdsa.tech">hello@cdsa.tech</a>
+            📧 <a href="mailto:agriscan@cdsa.tech">agriscan@cdsa.tech</a>
           </p>
         </section>
 
