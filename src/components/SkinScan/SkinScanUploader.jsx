@@ -63,7 +63,7 @@ function SkinScanUploader() {
           <h3>Find your perfect shade in real time.</h3>
         </div>
         <p>Upload a photo or use your webcam to find the perfect shade of lipstick, eye shadow and blush in real time.<br /><br />Find out what suits you and create your own unique look without breaking the bank. Try it now and find your dream makeup!</p>
-        <a href="/#/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+        <a href="/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
       </div>
 
       {!preview && (
