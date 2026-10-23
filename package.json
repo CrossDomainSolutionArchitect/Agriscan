@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "BROWSER=none WDS_SOCKET_PORT=0 vite --port 3000",
-    "build": "vite build",
+    "build": "vite build && node scripts/create-pages-routes.mjs",
     "preview": "vite preview",
     "test": "vitest",
     "deploy": "npm run build && gh-pages -d dist"
