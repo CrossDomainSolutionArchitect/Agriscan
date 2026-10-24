@@ -1,7 +1,9 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { SignIn, SignUp, useUser } from '@clerk/clerk-react'
+import { useUser } from '@clerk/clerk-react'
 import Loader from './components/Loader/Loader'
+
+const CLERK_SIGN_UP_URL = 'https://accounts.agri-scan.co.za/sign-up'
 
 // Lazy load pages for better performance
 const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'))
@@ -17,30 +19,19 @@ const ProtectedRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useUser()
   const location = useLocation()
 
+  useEffect(() => {
+    if (isLoaded && !isSignedIn && import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
+      const returnUrl = `${window.location.origin}${location.pathname}`
+      const signUpUrl = new URL(CLERK_SIGN_UP_URL)
+      signUpUrl.searchParams.set('redirect_url', returnUrl)
+      window.location.assign(signUpUrl.toString())
+    }
+  }, [isLoaded, isSignedIn, location.pathname])
+
   if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
   if (!isLoaded) return <Loader />
-  if (!isSignedIn) {
-    return <Navigate to={`/sign-up?redirect_url=${encodeURIComponent(location.pathname)}`} replace />
-  }
+  if (!isSignedIn) return <Loader />
   return children
-}
-
-function ClerkAuthPage({ mode }) {
-  const location = useLocation()
-  const redirectUrl = new URLSearchParams(location.search).get('redirect_url') || '/agriscan'
-  const Component = mode === 'sign-in' ? SignIn : SignUp
-
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 1rem' }}>
-      <Component
-        routing="path"
-        path={`/${mode}`}
-        signInUrl="/sign-in"
-        signUpUrl="/sign-up"
-        fallbackRedirectUrl={redirectUrl}
-      />
-    </div>
-  )
 }
 
 function App() {
@@ -59,8 +50,6 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/sign-in" element={<ClerkAuthPage mode="sign-in" />} />
-        <Route path="/sign-up" element={<ClerkAuthPage mode="sign-up" />} />
         <Route path="/agriscan" element={<ProtectedRoute><AgriscanPage /></ProtectedRoute>} />
         <Route path="/skinscan" element={<ProtectedRoute><SkinScanPage /></ProtectedRoute>} />
         <Route path="/partner" element={<PartnerPage />} /> {/* NEW */}
