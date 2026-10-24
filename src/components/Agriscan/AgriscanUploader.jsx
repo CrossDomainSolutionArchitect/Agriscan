@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { predictPlantDisease } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
 
@@ -177,7 +178,7 @@ function AgriscanUploader() {
           <h3>Smarter crop health starts here.</h3>
         </div>
         <p>Get AI-powered crop disease analysis and recommendations tailored to your operation. Request a demo to explore Agriscan with your team.</p>
-        <a href="/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></a>
+        <Link to="/agriscan" className={styles.demoLink}>Request demo <span aria-hidden="true">↗</span></Link>
       </div>
 
       {!preview && (

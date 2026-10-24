@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './HowItWorks.module.css'
 
 function HowItWorks() {
@@ -50,10 +51,10 @@ function HowItWorks() {
             <div className={styles.results}>
               <p>Crop produce increases by <strong>30-50%</strong></p>
               <p>Sales growth by <strong>10-30%</strong></p>
-              <a className={styles.demoButton} href="/agriscan">
+              <Link className={styles.demoButton} to="/agriscan">
                 <span>Go to demo</span>
                 <span aria-hidden="true">↗</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Hero.module.css'
 
 function Hero() {
@@ -13,7 +14,7 @@ function Hero() {
             and turn uncertainty into your next best step.
           </p>
           <div className={styles.ctaGroup}>
-            <a href="/agriscan" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></a>
+            <Link to="/agriscan" className={styles.primaryBtn}>Request Demo<span aria-hidden="true">↗</span></Link>
             
           </div>
          
