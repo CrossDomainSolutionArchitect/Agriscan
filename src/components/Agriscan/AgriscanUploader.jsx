@@ -82,7 +82,7 @@ function AgriscanUploader() {
 
   const capturePhoto = () => {
     const video = videoRef.current
-    if (!video?.videoWidth || !video?.videoHeight) return
+    if (!video?.videoWidth || !video.videoHeight) return
 
     const canvas = document.createElement('canvas')
     canvas.width = video.videoWidth
@@ -202,6 +202,7 @@ function AgriscanUploader() {
                 </button>
               </div>
             )}
+
           </div>
 
           {/* Loading State */}
@@ -213,74 +214,19 @@ function AgriscanUploader() {
             </div>
           )}
 
-          {/* Results */}
+          {/* Results - IDENTICAL to SkinScan */}
           {result && !loading && (
             <div className={styles.results}>
               <h3>🌾 Diagnosis Result</h3>
-
-              {/* Diagnosis Box */}
               <div className={styles.diagnosisBox}>
                 <span className={styles.diagnosisLabel}>Predicted Condition:</span>
                 <span className={styles.diagnosisValue}>
-                  {result.diagnosis && !result.diagnosis.startsWith('Unable to parse')
-                    ? result.diagnosis
-                    : 'No clear prediction — try a different image'}
+                  {result.diagnosis && !result.diagnosis.startsWith('Unable to parse') 
+                    ? result.diagnosis 
+                    : 'No clear prediction - try a different image'}
                 </span>
-                {typeof result.topConfidence === 'number' && result.topConfidence > 0 && (
-                  <span className={styles.confidencePill}>
-                    {(result.topConfidence * 100).toFixed(1)}% confidence
-                  </span>
-                )}
               </div>
 
-              {/* Gating Message (low confidence or unparsed) */}
-              {result.gated && result.gateMessage && (
-                <div className={styles.gateMessage}>
-                  <span className={styles.gateIcon}>⚠️</span>
-                  <p>{result.gateMessage}</p>
-                </div>
-              )}
-
-              {/* Recommendation Panel (only if not gated and recommendation exists) */}
-              {!result.gated && result.recommendation && (
-                <div className={styles.recommendation}>
-                  <div className={styles.recommendationHeader}>
-                    <h4>🌿 Recommended Action</h4>
-                    <span className={`${styles.urgency} ${styles[result.recommendation.urgency]}`}>
-                      {result.recommendation.urgency.toUpperCase()} URGENCY
-                    </span>
-                  </div>
-
-                  <p className={styles.summary}>{result.recommendation.summary}</p>
-
-                  {result.recommendation.symptoms && (
-                    <div className={styles.symptomsBox}>
-                      <strong>What to look for:</strong>
-                      <p>{result.recommendation.symptoms}</p>
-                    </div>
-                  )}
-
-                  {result.recommendation.actions?.length > 0 && (
-                    <div className={styles.actionsBox}>
-                      <strong>What to do:</strong>
-                      <ul className={styles.actions}>
-                        {result.recommendation.actions.map((action, i) => (
-                          <li key={i}>{action}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {result.recommendation.consultExpert && (
-                    <p className={styles.expertNote}>
-                      ⚠️ Confirm this diagnosis with a qualified agricultural extension officer
-                      before applying chemical treatment.
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {/* Confidence Scores (always shown for transparency) */}
               <div className={styles.confidenceSection}>
                 <h4>Confidence Scores</h4>
                 {result.confidences && result.confidences.length > 0 ? (
@@ -289,7 +235,7 @@ function AgriscanUploader() {
                       <div key={index} className={styles.confidenceItem}>
                         <span className={styles.confidenceLabel}>{item.label}</span>
                         <div className={styles.confidenceBar}>
-                          <div
+                          <div 
                             className={styles.confidenceFill}
                             style={{ width: `${(item.confidence || 0) * 100}%` }}
                           />
@@ -309,13 +255,16 @@ function AgriscanUploader() {
                 <button onClick={handleReset} className={styles.newAnalysisBtn}>
                   🔄 New Analysis
                 </button>
-                <button onClick={() => window.print()} className={styles.printBtn}>
+                <button 
+                  onClick={() => window.print()} 
+                  className={styles.printBtn}
+                >
                   🖨️ Print Results
                 </button>
               </div>
 
               <p className={styles.disclaimer}>
-                ⚠️ This is an AI-powered tool for informational purposes only.
+                ⚠️ This is an AI-powered tool for informational purposes only. 
                 Always consult a qualified agricultural expert for crop disease advice.
               </p>
             </div>
