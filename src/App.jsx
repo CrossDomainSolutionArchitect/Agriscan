@@ -1,9 +1,7 @@
-import React, { useEffect, Suspense, lazy } from 'react'
+import React, { useEffect, useRef, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { useUser } from '@clerk/clerk-react'
+import { useClerk, useUser } from '@clerk/clerk-react'
 import Loader from './components/Loader/Loader'
-
-const CLERK_SIGN_UP_URL = 'https://accounts.agri-scan.co.za/sign-up'
 
 // Lazy load pages for better performance
 const LandingPage = lazy(() => import('./pages/LandingPage/LandingPage'))
@@ -17,16 +15,21 @@ const PartnerPage = lazy(() => import('./pages/PartnerPage/PartnerPage')) // NEW
 
 const ProtectedRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useUser()
+  const { openSignUp } = useClerk()
   const location = useLocation()
+  const hasOpenedAuth = useRef(false)
 
   useEffect(() => {
     if (isLoaded && !isSignedIn && import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
-      const returnUrl = `${window.location.origin}${location.pathname}`
-      const signUpUrl = new URL(CLERK_SIGN_UP_URL)
-      signUpUrl.searchParams.set('redirect_url', returnUrl)
-      window.location.assign(signUpUrl.toString())
+      if (hasOpenedAuth.current) return
+
+      hasOpenedAuth.current = true
+      openSignUp({
+        afterSignInUrl: location.pathname,
+        afterSignUpUrl: location.pathname,
+      })
     }
-  }, [isLoaded, isSignedIn, location.pathname])
+  }, [isLoaded, isSignedIn, location.pathname, openSignUp])
 
   if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
   if (!isLoaded) return <Loader />
