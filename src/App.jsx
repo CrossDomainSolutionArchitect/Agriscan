@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }) => {
 
   if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
   if (!isLoaded) return <Loader />
-  if (!isSignedIn) return <Navigate to="/" replace />
+  if (!isSignedIn) return <Loader />
   return children
 }
 
