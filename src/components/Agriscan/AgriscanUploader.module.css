@@ -438,6 +438,104 @@
   color: #1a1a1a;
 }
 
+.confidencePill {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: #e8efe4;
+  color: #40543b;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.recommendation {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid #cbd5c5;
+  border-radius: 14px;
+  background: #f7f9f5;
+}
+
+.recommendationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.recommendationHeader h4 {
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.urgency {
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.low { background: #dce9d5; color: #40543b; }
+.medium { background: #f5e7b8; color: #765b0b; }
+.high, .critical { background: #f5d2c8; color: #8a2f1c; }
+
+.summary {
+  margin: 1rem 0;
+  color: #4a4a4a;
+  line-height: 1.5;
+}
+
+.symptomsBox,
+.actionsBox {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.symptomsBox p {
+  margin: 0.4rem 0 0;
+  color: #4a4a4a;
+  line-height: 1.5;
+}
+
+.actions {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+  color: #4a4a4a;
+  line-height: 1.6;
+}
+
+.expertNote {
+  margin: 1rem 0 0;
+  color: #765b0b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.gateMessage {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid #ead9a1;
+  border-radius: 12px;
+  background: #fff9e7;
+  color: #765b0b;
+}
+
+.gateMessage p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.gateIcon {
+  flex: 0 0 auto;
+}
+
 .confidenceSection h4 {
   font-size: 1rem;
   margin-bottom: 0.75rem;

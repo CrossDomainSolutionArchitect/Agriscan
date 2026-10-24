@@ -1,7 +1,10 @@
 // Agriscan API Service - Using @gradio/client
 import { Client } from '@gradio/client'
+import recommendationData from '../data/diseaseRecommendations.json'
 
 const SPACE_NAME = 'Vernard/agriscan-ai-demo'
+const MIN_RECOMMENDATION_CONFIDENCE = 0.6
+const recommendations = recommendationData.diseases
 
 let client = null
 
@@ -56,6 +59,26 @@ function extractTopPrediction(markdown) {
   return null
 }
 
+function normalizeLabel(label) {
+  return label
+    .replace(/[`"]/g, '')
+    .replace(/___|__/g, ' ')
+    .replace(/[_-]+/g, ' ')
+    .replace(/,\s*/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
+function findRecommendation(label) {
+  const normalizedLabel = normalizeLabel(label)
+  const entry = Object.entries(recommendations).find(
+    ([key]) => normalizeLabel(key) === normalizedLabel
+  )
+
+  return entry ? { diagnosis: entry[0], recommendation: entry[1] } : null
+}
+
 // Predict plant disease from an image File
 export async function predictPlantDisease(imageFile) {
   try {
@@ -86,11 +109,24 @@ export async function predictPlantDisease(imageFile) {
     if (!topPrediction) {
       topPrediction = 'Unable to parse prediction. Please try again with a clearer image.'
     }
-    
+
+    const topConfidence = confidences[0]?.confidence || 0
+    const matchedRecommendation = findRecommendation(topPrediction)
+    const gated = topConfidence < MIN_RECOMMENDATION_CONFIDENCE || !matchedRecommendation
+    const gateMessage = !matchedRecommendation
+      ? 'No recommendation is available for this model result. Please try another image or consult an agricultural expert.'
+      : topConfidence < MIN_RECOMMENDATION_CONFIDENCE
+        ? `The prediction confidence is ${(topConfidence * 100).toFixed(1)}%. Upload a clearer image before acting on this result.`
+        : null
+
     // Return in the SAME FORMAT as SkinScan
     return {
-      diagnosis: topPrediction,
+      diagnosis: matchedRecommendation?.diagnosis || topPrediction,
       confidences: confidences,
+      topConfidence,
+      recommendation: matchedRecommendation?.recommendation || null,
+      gated,
+      gateMessage,
       timestamp: new Date().toISOString(),
       raw: result
     }

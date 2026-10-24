@@ -226,7 +226,53 @@ function AgriscanUploader() {
                     ? result.diagnosis 
                     : 'No clear prediction - try a different image'}
                 </span>
+                {typeof result.topConfidence === 'number' && result.topConfidence > 0 && (
+                  <span className={styles.confidencePill}>
+                    {(result.topConfidence * 100).toFixed(1)}% confidence
+                  </span>
+                )}
               </div>
+
+              {result.gated && result.gateMessage && (
+                <div className={styles.gateMessage} role="status">
+                  <span className={styles.gateIcon}>⚠️</span>
+                  <p>{result.gateMessage}</p>
+                </div>
+              )}
+
+              {!result.gated && result.recommendation && (
+                <div className={styles.recommendation}>
+                  <div className={styles.recommendationHeader}>
+                    <h4>🌿 Recommended Action</h4>
+                    <span className={`${styles.urgency} ${styles[result.recommendation.urgency]}`}>
+                      {result.recommendation.urgency.toUpperCase()} URGENCY
+                    </span>
+                  </div>
+                  <p className={styles.summary}>{result.recommendation.summary}</p>
+                  {result.recommendation.symptoms && (
+                    <div className={styles.symptomsBox}>
+                      <strong>What to look for:</strong>
+                      <p>{result.recommendation.symptoms}</p>
+                    </div>
+                  )}
+                  {result.recommendation.actions?.length > 0 && (
+                    <div className={styles.actionsBox}>
+                      <strong>What to do:</strong>
+                      <ul className={styles.actions}>
+                        {result.recommendation.actions.map((action, index) => (
+                          <li key={index}>{action}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.recommendation.consultExpert && (
+                    <p className={styles.expertNote}>
+                      ⚠️ Confirm this diagnosis with a qualified agricultural extension officer
+                      before applying chemical treatment.
+                    </p>
+                  )}
+                </div>
+              )}
 
               <div className={styles.confidenceSection}>
                 <h4>Confidence Scores</h4>
