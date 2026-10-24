@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { useUser } from '@clerk/clerk-react'
+import { useUser, useClerk } from '@clerk/clerk-react'
 import Loader from './components/Loader/Loader'
 
 // Lazy load pages for better performance
@@ -14,9 +14,20 @@ const CookiePolicy = lazy(() => import('./pages/CookiePolicy/CookiePolicy'))
 const PartnerPage = lazy(() => import('./pages/PartnerPage/PartnerPage')) // NEW
 
 const ProtectedRoute = ({ children }) => {
-  if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
-
   const { isLoaded, isSignedIn } = useUser()
+  const { openSignUp } = useClerk()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (isLoaded && !isSignedIn && import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) {
+      openSignUp({
+        afterSignInUrl: location.pathname,
+        afterSignUpUrl: location.pathname,
+      })
+    }
+  }, [isLoaded, isSignedIn, location.pathname, openSignUp])
+
+  if (!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY) return <Navigate to="/" replace />
   if (!isLoaded) return <Loader />
   if (!isSignedIn) return <Navigate to="/" replace />
   return children
@@ -38,8 +49,8 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/agriscan" element={<AgriscanPage />} />
-        <Route path="/skinscan" element={<SkinScanPage />} />
+        <Route path="/agriscan" element={<ProtectedRoute><AgriscanPage /></ProtectedRoute>} />
+        <Route path="/skinscan" element={<ProtectedRoute><SkinScanPage /></ProtectedRoute>} />
         <Route path="/partner" element={<PartnerPage />} /> {/* NEW */}
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
