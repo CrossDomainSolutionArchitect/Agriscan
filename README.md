@@ -1,78 +1,171 @@
-# GitHub Codespaces ♥️ React
+# Agriscan
 
-Welcome to your shiny new Codespace running React! We've got everything fired up and running for you to explore React.
+Agriscan is a React web application for crop disease analysis. Users can upload
+a crop or leaf image, use their device camera, send the image to the Agriscan
+AI model, and receive a diagnosis, confidence scores, and agronomic guidance.
 
-You've got a blank canvas to work on from a git perspective as well. There's a single initial commit with the what you're seeing right now - where you go from here is up to you!
+Production site: [agri-scan.co.za](https://agri-scan.co.za)
 
-Everything you do here is contained within this one codespace. There is no repository on GitHub yet. If and when you’re ready you can click "Publish Branch" and we’ll create your repository and push up your project. If you were just exploring then and have no further need for this code then you can simply delete your codespace and it's gone forever.
+## Features
 
-This project was bootstrapped for you with [Vite](https://vitejs.dev/).
+- Crop selection for maize, tomato, citrus, and potato.
+- Image upload with JPG, PNG, and WEBP support.
+- Camera capture on supported devices.
+- AI prediction through the
+  [`Vernard/agriscan-ai-demo`](https://huggingface.co/spaces/Vernard/agriscan-ai-demo)
+  Hugging Face Space using `@gradio/client`.
+- Confidence scores for the model's predictions.
+- Local recommendation data for supported disease labels.
+- Recommendation details including:
+  - urgency level;
+  - summary and symptoms;
+  - recommended actions; and
+  - an agricultural expert consultation warning where appropriate.
+- Recommendation safety gating when confidence is below 60% or no matching
+  recommendation is available.
+- Clerk authentication before users enter the Agriscan and SkinScan demos.
+- Responsive layout and print-friendly analysis results.
 
-## Available Scripts
+## Technology
 
-In the project directory, you can run:
+- React 18
+- Vite
+- React Router
+- Clerk React
+- Hugging Face Gradio client
+- Vitest and Testing Library
+
+## Requirements
+
+- Node.js 18 or newer
+- npm
+- A Clerk application with the production domain configured
+- Access to the Agriscan Hugging Face Space
+
+## Local setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create `.env.local` in the project root:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_publishable_key
+```
+
+Only the Clerk publishable key belongs in the Vite frontend. Never put
+`CLERK_SECRET_KEY` in source code, `.env.local` committed to Git, or any
+client-side bundle.
+
+Start the development server:
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Using the application
+
+1. Open the landing page.
+2. Select **Request Demo** or **Go to demo**.
+3. Complete Clerk sign-up or sign-in when prompted.
+4. Choose a crop or upload a crop image.
+5. Select **Use camera** or **Choose an image**.
+6. Select **Analyze Image**.
+7. Review the diagnosis, confidence scores, and recommendation.
+
+The recommendation database is stored in
+[`src/data/diseaseRecommendations.json`](./src/data/diseaseRecommendations.json).
+The model label is normalized before lookup so common formats such as
+`Tomato___Late_blight` can match a recommendation key such as
+`Tomato Late blight`.
+
+## Available scripts
 
 ### `npm start`
 
-We've already run this for you in the `Codespaces: server` terminal window below. If you need to stop the server for any reason you can just run `npm start` again to bring it back online.
-
-Runs the app in the development mode.\
-Open [http://localhost:3000/](http://localhost:3000/) in the built-in Simple Browser (`Cmd/Ctrl + Shift + P > Simple Browser: Show`) to view your running application.
-
-The page will reload automatically when you make changes.\
-You may also see any lint errors in the console.
+Starts the Vite development server on port 3000.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs the Vitest test runner.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Creates the optimized production bundle in `dist`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `npm run preview`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Serves the production bundle locally for verification.
 
-## Learn More
+### `npm run deploy`
 
-You can learn more in the [Vite documentation](https://vitejs.dev/guide/).
+Builds the application and publishes `dist` to the `gh-pages` branch using
+`gh-pages`. GitHub authentication must be configured before running this
+command.
 
-To learn Vitest, a Vite-native testing framework, go to [Vitest documentation](https://vitest.dev/guide/)
+## Project structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```text
+src/
+├── components/
+│   └── Agriscan/              # Crop selection, upload, camera, and results
+├── data/
+│   └── diseaseRecommendations.json
+├── pages/
+│   ├── AgriscanPage/
+│   └── SkinScanPage/
+├── services/
+│   └── agriscanService.js     # Gradio connection and result parsing
+├── App.jsx                    # Routes and protected demo access
+└── main.jsx                   # Clerk and React Router providers
+public/                        # Static images and GitHub Pages files
+```
 
-### Code Splitting
+## Authentication
 
-This section has moved here: [https://sambitsahoo.com/blog/vite-code-splitting-that-works.html](https://sambitsahoo.com/blog/vite-code-splitting-that-works.html)
+Clerk is initialized in `src/main.jsx` using
+`VITE_CLERK_PUBLISHABLE_KEY`. The `/agriscan` and `/skinscan` routes require
+an authenticated Clerk user. When an unauthenticated user selects a demo,
+the Clerk sign-up modal opens and returns the user to the requested route after
+authentication.
 
-### Analyzing the Bundle Size
+Production Clerk account pages:
 
-This section has moved here: [https://github.com/btd/rollup-plugin-visualizer#rollup-plugin-visualizer](https://github.com/btd/rollup-plugin-visualizer#rollup-plugin-visualizer)
+- Sign in: [accounts.agri-scan.co.za/sign-in](https://accounts.agri-scan.co.za/sign-in)
+- Sign up: [accounts.agri-scan.co.za/sign-up](https://accounts.agri-scan.co.za/sign-up)
+- Unauthorized sign in: [accounts.agri-scan.co.za/unauthorized-sign-in](https://accounts.agri-scan.co.za/unauthorized-sign-in)
 
-### Making a Progressive Web App
+## Deployment
 
-This section has moved here: [https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf](https://dev.to/hamdankhan364/simplifying-progressive-web-app-pwa-development-with-vite-a-beginners-guide-38cf)
+The production site uses GitHub Pages with the `gh-pages` branch and the
+custom domain `agri-scan.co.za`. The Vite base path is `/`, as configured in
+`vite.config.js`.
 
-### Advanced Configuration
+Before deploying:
 
-This section has moved here: [https://vitejs.dev/guide/build.html#advanced-base-options](https://vitejs.dev/guide/build.html#advanced-base-options)
+1. Configure `VITE_CLERK_PUBLISHABLE_KEY` in the build environment.
+2. Configure Clerk's production instance for `agri-scan.co.za`.
+3. Allow the production application and demo redirect URLs in Clerk.
+4. Authenticate GitHub.
+5. Run:
 
-### Deployment
+   ```bash
+   npm run deploy
+   ```
 
-The source code lives on `main`. Each push to `main` builds the application
-and publishes only the generated `dist` directory to the `gh-pages` branch.
-Configure the repository's GitHub Pages source as `gh-pages` at the repository
-root (`/`).
+Demo links use React Router client-side navigation. This is important for
+GitHub Pages because direct server requests to `/agriscan` or `/skinscan` may
+otherwise return a 404 instead of allowing the single-page application to
+handle the route.
 
-The site is available at [agri-scan.co.za](https://agri-scan.co.za). The Vite
-base path is `/` because the project uses this custom domain. If the custom
-domain is removed and the repository is served at
-`/<repository-name>/`, update the base path in `vite.config.js` accordingly.
+## Disclaimer
 
-### Troubleshooting
-
-This section has moved here: [https://vitejs.dev/guide/troubleshooting.html](https://vitejs.dev/guide/troubleshooting.html)
+Agriscan provides AI-generated information for general guidance only. Results
+are not a substitute for professional agronomic advice. Confirm diagnoses with
+a qualified agricultural extension officer before applying chemical treatments,
+and follow all local regulations and product label instructions.
