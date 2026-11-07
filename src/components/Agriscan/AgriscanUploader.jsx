@@ -55,6 +55,7 @@ function AgriscanUploader() {
   const [isDragging, setIsDragging] = useState(false)
   const videoRef = useRef(null)
   const streamRef = useRef(null)
+  const fileInputRef = useRef(null)
 
   // Clerk session claims carry the verified profile fields used by the
   // existing backend upsert. Force a fresh token so newly configured claims
@@ -222,7 +223,14 @@ function AgriscanUploader() {
           </div>
 
           {!preview ? (
-            <button type="button" className={styles.dropzoneButton} onClick={() => openUpload()}>
+            <button
+              type="button"
+              className={styles.dropzoneButton}
+              onClick={() => fileInputRef.current?.click()}
+              onDragOver={(event) => { event.preventDefault(); setIsDragging(true) }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={handleDrop}
+            >
               <span className={styles.uploadIcon} aria-hidden="true">↑</span>
               <strong>Drop Image Here - or - Click to Upload</strong>
               <span>JPG, PNG or WEBP · Maximum 8 MB</span>
@@ -241,6 +249,14 @@ function AgriscanUploader() {
               </div>
             </div>
           )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className={styles.hiddenFileInput}
+            onChange={handleFileChange}
+          />
 
           <label className={styles.consentLabel}>
             <input type="checkbox" checked={personalDataConsent} onChange={(event) => setPersonalDataConsent(event.target.checked)} disabled={!image} />
@@ -301,7 +317,7 @@ function AgriscanUploader() {
           <div className={styles.stageResults}>
             <section className={styles.stageCard}>
               <div className={styles.stageHeading}><span>01</span><div><h4>YOLO11n leaf detection</h4><p>Detected leaf region used as input to EfficientNetB0.</p></div></div>
-              <img src={leafDetection?.annotatedImage || preview} alt="YOLO11n annotated leaf detection" className={styles.detectionImage} />
+              <img src={leafDetection?.annotatedImage || preview} alt="Leaf photograph processed by YOLO11n detection" className={styles.detectionImage} />
               <div className={styles.detectionMetrics}>
                 <div><span>Detected crop</span><strong>{leafDetection?.crop || 'Leaf region detected'}</strong></div>
                 <div><span>Detection confidence</span><strong>{typeof leafDetection?.confidence === 'number' ? (leafDetection.confidence * 100).toFixed(1) + '%' : 'Not returned'}</strong></div>
