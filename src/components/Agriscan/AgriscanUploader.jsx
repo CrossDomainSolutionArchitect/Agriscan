@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useAuth } from '@clerk/clerk-react'
 import { Link } from 'react-router-dom'
 import { predictPlantDisease } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
@@ -11,6 +12,7 @@ const crops = [
 ]
 
 function AgriscanUploader() {
+  const { getToken } = useAuth()
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -124,13 +126,18 @@ function AgriscanUploader() {
 
   const handleAnalyze = async () => {
     if (!image) return
+    if (!selectedCrop || !['maize', 'tomato', 'potato'].includes(selectedCrop.title.toLowerCase())) {
+      setError('Select maize, tomato or potato before analyzing. Citrus is not yet enabled in the current AI/database scope.')
+      return
+    }
 
     setLoading(true)
     setError(null)
     setResult(null)
 
     try {
-      const prediction = await predictPlantDisease(image)
+      const token = await getToken()
+      const prediction = await predictPlantDisease(image, token, selectedCrop.title.toLowerCase())
       setResult(prediction)
     } catch (err) {
       setError(err.message || 'Failed to analyze image. Please try again.')
@@ -155,7 +162,7 @@ function AgriscanUploader() {
       </p>
 
       <div className={styles.cropOptions}>
-        {crops.map((crop) => (
+        {crops.filter((crop) => ['maize', 'tomato', 'potato'].includes(crop.title.toLowerCase())).map((crop) => (
           <button
             className={styles.cropOption}
             key={crop.title}
@@ -361,7 +368,18 @@ function AgriscanUploader() {
             <h3 id="upload-modal-title">
               Upload {selectedCrop ? `${selectedCrop.title.toLowerCase()} ` : ''}photo
             </h3>
-            <p>Use a clear photo of the crop or leaf for the best result.</p>
+            <p>Use a clear photo of the crop or leaf for the best result. Supported crops: maize, tomato and potato.</p>
+            {!selectedCrop && (
+              <label className={styles.cropSelector}>
+                <strong>Crop type</strong>
+                <select value={selectedCrop?.title || ''} onChange={(event) => setSelectedCrop(crops.find((crop) => crop.title === event.target.value) || null)}>
+                  <option value="">Select crop</option>
+                  {crops.filter((crop) => ['maize', 'tomato', 'potato'].includes(crop.title.toLowerCase())).map((crop) => (
+                    <option key={crop.title} value={crop.title}>{crop.title}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <label className={styles.uploadDropzone}>
               <input
                 type="file"
