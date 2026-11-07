@@ -11,9 +11,8 @@ Production site: [agri-scan.co.za](https://agri-scan.co.za)
 - Crop selection for maize, tomato, citrus, and potato.
 - Image upload with JPG, PNG, and WEBP support.
 - Camera capture on supported devices.
-- AI prediction through the
-  [`Vernard/agriscan-ai-demo`](https://huggingface.co/spaces/Vernard/agriscan-ai-demo)
-  Hugging Face Space using `@gradio/client`.
+- AI prediction through the authenticated AgriScan FastAPI backend, which calls the configured Hugging Face Gradio inference Space server-side.
+- Clerk-authenticated farmer profiles and persistent diagnosis history in Supabase.
 - Confidence scores for the model's predictions.
 - Local recommendation data for supported disease labels.
 - Recommendation details including:
@@ -56,9 +55,7 @@ Create `.env.local` in the project root:
 VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_publishable_key
 ```
 
-Only the Clerk publishable key belongs in the Vite frontend. Never put
-`CLERK_SECRET_KEY` in source code, `.env.local` committed to Git, or any
-client-side bundle.
+Only the Clerk publishable key and public FastAPI base URL belong in the Vite frontend. Never put Clerk secret keys, Supabase secret/service-role keys, or Hugging Face tokens in source code or any client-side bundle.
 
 Start the development server:
 
