@@ -9,6 +9,10 @@
   padding: 0 1rem;
 }
 
+.pageLinks { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+
+.profileLink { color:#385b31; font-weight:700; text-decoration:none; }
+
 .back {
   display: inline-flex;
   align-items: center;
