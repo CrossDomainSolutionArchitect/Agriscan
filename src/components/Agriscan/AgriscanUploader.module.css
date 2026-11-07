@@ -751,3 +751,175 @@
   color: #1a1a1a;
   font: inherit;
 }
+
+
+/* AgriScan staged model results */
+.pageIntro { margin: 0 0 1.75rem; }
+.eyebrow, .panelEyebrow {
+  display: inline-block; color: #62775b; font-size: .72rem; font-weight: 800;
+  letter-spacing: .11em; text-transform: uppercase;
+}
+.pageIntro h2 {
+  margin: .55rem 0 .65rem; color: #172116;
+  font-size: clamp(1.7rem, 4vw, 2.35rem); line-height: 1.12;
+}
+.pageIntro p { max-width: 760px; margin: 0; color: #4c5948; font-size: 1rem; line-height: 1.65; }
+.cropOptionSelected { outline: 3px solid #8ba77b; outline-offset: 3px; }
+
+.modelStages {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;
+}
+.modelResultPanel {
+  min-width: 0; padding: 1.15rem; border: 1px solid #e1e7dc;
+  border-radius: 14px; background: #fff;
+}
+.modelResultPanel:first-child { grid-column: 1 / -1; }
+.modelResultPanel h4 { margin: 0 0 .85rem; color: #263523; font-size: .98rem; }
+.detectionPreview {
+  display: block; width: 100%; max-height: 420px; object-fit: contain;
+  border-radius: 11px; background: #f3f5f1;
+}
+.detectionFacts {
+  display: flex; flex-wrap: wrap; gap: .65rem 1rem; margin-top: .75rem;
+  color: #61705b; font-size: .78rem;
+}
+.detectionFacts strong { color: #293c25; }
+.modelScore { margin: .75rem 0; }
+.modelScoreTop {
+  display: flex; justify-content: space-between; gap: .6rem; margin-bottom: .3rem;
+  color: #344330; font-size: .8rem;
+}
+.modelScoreTop strong { flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+.modelScoreTrack { height: 7px; overflow: hidden; border-radius: 999px; background: #e8eee4; }
+.modelScoreTrack span { display: block; height: 100%; border-radius: inherit; background: #6e8e63; }
+.noModelScores { color: #7b8575; font-size: .82rem; }
+@media (max-width: 760px) {
+  .modelStages { grid-template-columns: 1fr; }
+  .modelResultPanel:first-child { grid-column: auto; }
+}
+
+
+/* Restored upload flow and three-stage inference results */
+.pageIntro { margin: 0 0 1.5rem; }
+.eyebrow, .panelEyebrow {
+  display: inline-block; color: #62775b; font-size: .72rem; font-weight: 800;
+  letter-spacing: .11em; text-transform: uppercase;
+}
+.pageIntro h2 { margin: .55rem 0 .65rem; color: #172116; font-size: clamp(1.7rem, 4vw, 2.35rem); line-height: 1.12; }
+.pageIntro p { max-width: 760px; margin: 0; color: #4c5948; font-size: 1rem; line-height: 1.65; }
+.uploadWorkspace { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(230px, .85fr); gap: 1rem; margin-bottom: 1.5rem; }
+.uploadPanel, .pipelineCard, .processingPanel, .stageCard, .predictionPanel {
+  min-width: 0; padding: 1.25rem; border: 1px solid #e1e7dc; border-radius: 15px; background: #fff;
+}
+.uploadPanelHeading, .resultsHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: .9rem; margin-bottom: 1rem; }
+.uploadPanelHeading h3, .pipelineCard h3, .processingPanel h3, .resultsHeading h3 {
+  margin: .35rem 0 0; color: #172116; font-size: 1.12rem;
+}
+.supportedCrops { flex: 0 0 auto; padding: .35rem .6rem; border-radius: 999px; background: #f0f5ed; color: #52694b; font-size: .7rem; font-weight: 700; }
+.dropzoneButton {
+  display: flex; width: 100%; min-height: 220px; padding: 1.5rem; flex-direction: column;
+  align-items: center; justify-content: center; gap: .7rem; border: 2px dashed #b9c8b1;
+  border-radius: 14px; background: #f8faf6; color: #263523; cursor: pointer; font: inherit;
+}
+.dropzoneButton:hover { border-color: #718e66; background: #f0f5ed; }
+.dropzoneButton strong { text-align: center; font-size: 1rem; }
+.dropzoneButton > span:last-child { color: #778174; font-size: .8rem; }
+.previewBox { overflow: hidden; border: 1px solid #dfe6da; border-radius: 14px; background: #f8faf6; }
+.previewBoxDragging { outline: 3px dashed #718e66; outline-offset: 3px; }
+.previewActions { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding: .7rem .9rem; color: #64705e; font-size: .8rem; }
+.previewActions span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.textButton { flex: 0 0 auto; padding: 0; border: 0; background: transparent; color: #365b30; font: inherit; font-weight: 700; cursor: pointer; }
+.consentLabel { display: flex; align-items: flex-start; gap: .65rem; margin: 1rem 0; color: #485345; font-size: .78rem; line-height: 1.55; }
+.consentLabel input { flex: 0 0 auto; margin-top: .2rem; accent-color: #41643a; }
+.consentLabel a { color: #365b30; font-weight: 700; }
+.uploadActions { display: flex; align-items: center; gap: .7rem; }
+.analyzeBtn { min-height: 44px; padding: .7rem 1.35rem; border-radius: 10px; background: #20351d; color: #fff; font: inherit; font-weight: 750; }
+.analyzeBtn:disabled { opacity: .45; cursor: not-allowed; }
+.resetBtn { min-height: 44px; padding: .7rem 1rem; border: 1px solid #d4ddd0; border-radius: 10px; background: #fff; color: #344330; font: inherit; font-weight: 650; }
+.privacyNote { margin: .75rem 0 0; color: #7b8575; font-size: .72rem; }
+.pipelineCard { background: #f7faf5; }
+.pipelineCard h3 { margin-bottom: 1.1rem; }
+.pipelineSteps, .processingSteps { display: flex; flex-direction: column; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.pipelineSteps li { display: flex; align-items: flex-start; gap: .75rem; }
+.pipelineSteps li > span, .stageHeading > span {
+  display: grid; width: 2rem; height: 2rem; flex: 0 0 2rem; place-items: center;
+  border-radius: 50%; background: #e4eddf; color: #3e5a37; font-size: .72rem; font-weight: 800;
+}
+.pipelineSteps strong, .pipelineSteps small { display: block; }
+.pipelineSteps strong { color: #263523; font-size: .87rem; }
+.pipelineSteps small { margin-top: .25rem; color: #6c7767; font-size: .76rem; line-height: 1.45; }
+.processingPanel { display: grid; grid-template-columns: auto 1fr; gap: .75rem 1rem; align-items: center; margin: 1.25rem 0; background: #f7faf5; }
+.processingPanel p { margin: .35rem 0 0; color: #697565; font-size: .85rem; }
+.processingPanel .spinner { grid-row: span 2; }
+.processingSteps { grid-column: 2; gap: .3rem; padding-left: 1.1rem; list-style: decimal; color: #4f6149; font-size: .78rem; }
+.results { margin: 1.5rem 0; padding: 1.35rem; border: 1px solid #dce5d7; border-radius: 16px; background: #f8faf6; }
+.resultsHeading { align-items: center; }
+.completeStatus, .reviewStatus { padding: .38rem .7rem; border-radius: 999px; font-size: .72rem; font-weight: 800; }
+.completeStatus { background: #e5f1df; color: #365d2d; }
+.reviewStatus { background: #fff1d7; color: #805a13; }
+.finalDiagnosis { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem; border: 1px solid #e1e8dc; border-radius: 13px; background: #fff; }
+.diagnosisLabel { color: #71806c; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.finalDiagnosis h4 { margin: .35rem 0; color: #1c2b19; font-size: 1.3rem; }
+.finalDiagnosis p { margin: 0; color: #6c7667; font-size: .8rem; }
+.diagnosisConfidence { flex: 0 0 auto; text-align: right; }
+.diagnosisConfidence strong, .diagnosisConfidence span { display: block; }
+.diagnosisConfidence strong { color: #355f2e; font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.diagnosisConfidence span { color: #778173; font-size: .72rem; }
+.reviewNotice { margin-top: 1rem; padding: .9rem 1rem; border: 1px solid #ead39c; border-radius: 11px; background: #fff9e9; color: #775915; font-size: .83rem; }
+.reviewNotice p { margin: .25rem 0 0; line-height: 1.5; }
+.stageResults { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.stageCard { grid-column: 1 / -1; }
+.stageHeading { display: flex; align-items: center; gap: .75rem; margin-bottom: .9rem; }
+.stageHeading h4 { margin: 0; color: #263523; font-size: 1rem; }
+.stageHeading p { margin: .2rem 0 0; color: #788274; font-size: .77rem; }
+.detectionImage { display: block; width: 100%; max-height: 420px; object-fit: contain; border-radius: 11px; background: #f3f5f1; }
+.detectionMetrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin-top: .85rem; }
+.detectionMetrics div { padding: .7rem; border-radius: 9px; background: #f5f8f2; }
+.detectionMetrics span, .detectionMetrics strong { display: block; }
+.detectionMetrics span { color: #7b8575; font-size: .68rem; }
+.detectionMetrics strong { margin-top: .25rem; color: #293c25; font-size: .83rem; }
+.predictionPanel { background: #fff; }
+.predictionPanel h4 { margin: 0 0 .85rem; color: #263523; font-size: .95rem; }
+.predictionList { display: flex; flex-direction: column; gap: .75rem; }
+.predictionRow { min-width: 0; }
+.predictionTopline { display: flex; justify-content: space-between; gap: .6rem; margin-bottom: .3rem; color: #344330; font-size: .78rem; }
+.predictionLabel { overflow-wrap: anywhere; }
+.predictionTopline strong { flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+.predictionTrack { height: 7px; overflow: hidden; border-radius: 999px; background: #e8eee4; }
+.predictionFill { display: block; height: 100%; border-radius: inherit; background: #6e8e63; }
+.emptyPredictions { color: #7b8575; font-size: .82rem; }
+.recommendationSummary { margin: .85rem 0; color: #43513e; line-height: 1.55; }
+.recommendationSymptoms { color: #52604c; font-size: .85rem; }
+.recommendationActions { margin: .5rem 0 0; padding-left: 1.2rem; color: #43513e; font-size: .85rem; line-height: 1.65; }
+.resultFooter { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid #e2e8de; }
+.resultFooter > p { margin: 0; color: #7b8575; font-size: .75rem; line-height: 1.5; }
+@media (max-width: 760px) {
+  .uploadWorkspace { grid-template-columns: 1fr; }
+  .stageResults { grid-template-columns: 1fr; }
+  .stageCard { grid-column: auto; }
+  .detectionMetrics { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .uploadPanel, .pipelineCard, .results, .stageCard, .predictionPanel { padding: 1rem; }
+  .uploadPanelHeading, .resultsHeading { flex-direction: column; align-items: flex-start; }
+  .finalDiagnosis { align-items: flex-start; flex-direction: column; }
+  .diagnosisConfidence { text-align: left; }
+}
+@media print {
+  .cropOptions, .uploadWorkspace, .requestOption, .resultActions, .pageIntro { display: none !important; }
+  .results { border: 0; background: #fff; }
+}
+
+.hiddenFileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.cropOptions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 560px) {
+  .cropOptions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
