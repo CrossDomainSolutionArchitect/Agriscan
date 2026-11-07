@@ -12,6 +12,7 @@ const TermsConditions = lazy(() => import('./pages/TermsConditions/TermsConditio
 const Disclaimer = lazy(() => import('./pages/Disclaimer/Disclaimer'))
 const CookiePolicy = lazy(() => import('./pages/CookiePolicy/CookiePolicy'))
 const PartnerPage = lazy(() => import('./pages/PartnerPage/PartnerPage')) // NEW
+const ProfilePage = lazy(() => import('./pages/ProfilePage/ProfilePage'))
 
 const ProtectedRoute = ({ children }) => {
   const { isLoaded, isSignedIn } = useUser()
@@ -54,6 +55,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/agriscan" element={<ProtectedRoute><AgriscanPage /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/skinscan" element={<ProtectedRoute><SkinScanPage /></ProtectedRoute>} />
         <Route path="/partner" element={<PartnerPage />} /> {/* NEW */}
         <Route path="/privacy" element={<PrivacyPolicy />} />
