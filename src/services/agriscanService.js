@@ -79,8 +79,8 @@ export async function predictPlantDisease(imageFile, token, cropType, personalDa
   // The currently deployed API returns the original pipeline's Markdown
   // details and classifier score dictionaries. Extract YOLO11n metadata from
   // that report while keeping compatibility with a future structured payload.
-  const detectedCropMatch = details.match(/YOLO11n detected crop:\*\*\s*([^\\r\\n]+)/i)
-  const detectionConfidenceMatch = details.match(/Leaf detection confidence:\*\*\s*([0-9]+(?:\\.[0-9]+)?)\\s*%/i)
+  const detectedCropMatch = details.match(/YOLO11n detected crop:\*\*\s*([^\r\n]+)/i)
+  const detectionConfidenceMatch = details.match(/Leaf detection confidence:\*\*\s*([0-9]+(?:\.[0-9]+)?)\s*%/i)
   const cropPredictions = scoreList(cropBlock.top_predictions || prediction.crop_predictions, 3)
   const diseasePredictions = scoreList(diseaseBlock.top_predictions || prediction.disease_predictions, 5)
 
