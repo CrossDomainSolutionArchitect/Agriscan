@@ -909,3 +909,17 @@
   .cropOptions, .uploadWorkspace, .requestOption, .resultActions, .pageIntro { display: none !important; }
   .results { border: 0; background: #fff; }
 }
+
+.hiddenFileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.cropOptions { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 560px) {
+  .cropOptions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
