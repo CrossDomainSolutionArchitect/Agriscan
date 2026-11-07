@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useAuth, useUser } from '@clerk/clerk-react'
+import { useAuth } from '@clerk/clerk-react'
 import { Link } from 'react-router-dom'
 import { predictPlantDisease, syncFarmerProfile } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
@@ -9,23 +9,6 @@ const crops = [
   { number: '.02', title: 'Tomato', image: '/images/Tomatos.jpg' },
   { number: '.03', title: 'Potato', image: '/images/Potato.jpg' },
 ]
-
-function getFarmerProfile(user) {
-  if (!user) return {}
-  const metadata = user.publicMetadata || {}
-  return {
-    first_name: user.firstName || '',
-    last_name: user.lastName || '',
-    username: user.username || '',
-    email_address: user.primaryEmailAddress?.emailAddress || '',
-    phone: user.primaryPhoneNumber?.phoneNumber || '',
-    province: typeof metadata.province === 'string' ? metadata.province : '',
-    district: typeof metadata.district === 'string' ? metadata.district : '',
-    preferred_language:
-      (typeof metadata.preferred_language === 'string' && metadata.preferred_language) ||
-      (typeof user.locale === 'string' && user.locale) || 'en',
-  }
-}
 
 function formatPredictionLabel(label) {
   const parts = String(label || '').split('___')
@@ -59,8 +42,7 @@ function PredictionList({ title, items, emptyMessage }) {
 }
 
 function AgriscanUploader() {
-  const { getToken } = useAuth()
-  const { isLoaded: userLoaded, isSignedIn, user } = useUser()
+  const { getToken, isLoaded: authLoaded, isSignedIn } = useAuth()
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -74,21 +56,17 @@ function AgriscanUploader() {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
 
-  // Sync ordinary profile fields from Clerk. The verified session JWT subject
-  // remains the only source of farmer ownership on the API.
+  // Clerk session claims carry the verified profile fields used by the
+  // existing backend upsert. Force a fresh token so newly configured claims
+  // are available immediately rather than waiting for token cache expiry.
   useEffect(() => {
-    if (!userLoaded || !isSignedIn || !user) return undefined
+    if (!authLoaded || !isSignedIn) return undefined
     let active = true
-    getToken()
-      .then((token) => active && token ? syncFarmerProfile(token, getFarmerProfile(user)) : null)
+    getToken({ skipCache: true })
+      .then((token) => active && token ? syncFarmerProfile(token) : null)
       .catch((syncError) => console.warn('AgriScan profile synchronisation failed:', syncError.message))
     return () => { active = false }
-  }, [
-    userLoaded, isSignedIn, user?.id, user?.firstName, user?.lastName, user?.username,
-    user?.primaryEmailAddress?.emailAddress, user?.primaryPhoneNumber?.phoneNumber,
-    user?.publicMetadata?.province, user?.publicMetadata?.district,
-    user?.publicMetadata?.preferred_language, getToken,
-  ])
+  }, [authLoaded, isSignedIn, getToken])
 
   useEffect(() => {
     if (!isUploadOpen) {
@@ -186,9 +164,9 @@ function AgriscanUploader() {
     setError(null)
     setResult(null)
     try {
-      const token = await getToken()
+      const token = await getToken({ skipCache: true })
       if (!token) throw new Error('Your sign-in session has expired. Please sign in again.')
-      await syncFarmerProfile(token, getFarmerProfile(user))
+      await syncFarmerProfile(token)
       setResult(await predictPlantDisease(image, token, selectedCrop.title.toLowerCase(), personalDataConsent))
     } catch (err) {
       setError(err.message || 'Failed to analyse the image. Please try again.')
