@@ -1,67 +1,13 @@
-// Agriscan API Service - Using @gradio/client
-import { Client } from '@gradio/client'
+// AgriScan API client for the integrated FastAPI + Gradio Space.
 import recommendationData from '../data/diseaseRecommendations.json'
 
-const SPACE_NAME = 'Vernard/agriscan-ai-demo'
+const API_BASE_URL = (import.meta.env.VITE_AGRISCAN_API_URL || '').replace(/\/$/, '')
 const MIN_RECOMMENDATION_CONFIDENCE = 0.6
 const recommendations = recommendationData.diseases
 
-let client = null
-
-// Initialize the client (singleton pattern)
-async function getClient() {
-  if (!client) {
-    try {
-      client = await Client.connect(SPACE_NAME)
-    } catch (error) {
-      console.error('Failed to connect to Agriscan API:', error)
-      throw new Error('Could not connect to Agriscan API. Please try again later.')
-    }
-  }
-  return client
-}
-
-// Parse Markdown table from Agriscan output
-function parseMarkdownTable(markdown) {
-  const predictions = []
-  
-  // Try multiple patterns to handle different table formats
-  const patterns = [
-    // Pattern for: | #1 | `Label` | **21.66%** | `████...` |
-    /\|\s*#\d+\s*\|\s*`([^`]+)`\s*\|\s*\*\*([\d.]+)%?\*\*\s*\|\s*[`█░]+\s*\|/g,
-    // Pattern for: | #1 | `Label` | 21.66% | `████...` |
-    /\|\s*#\d+\s*\|\s*`([^`]+)`\s*\|\s*([\d.]+)%?\s*\|\s*[`█░]+\s*\|/g
-  ]
-  
-  for (const pattern of patterns) {
-    let match
-    while ((match = pattern.exec(markdown)) !== null) {
-      const label = match[1].trim()
-      const confidence = parseFloat(match[2]) / 100
-      if (!isNaN(confidence) && confidence > 0) {
-        predictions.push({ label, confidence })
-      }
-    }
-    // If we found predictions, stop trying other patterns
-    if (predictions.length > 0) break
-  }
-  
-  return predictions
-}
-
-// Extract top prediction from the Markdown
-function extractTopPrediction(markdown) {
-  // Look for "Top-1 Label: `Label`"
-  const topLabelMatch = markdown.match(/Top-1 Label:\s*`([^`]+)`/)
-  if (topLabelMatch) {
-    return topLabelMatch[1].trim()
-  }
-  return null
-}
-
 function normalizeLabel(label) {
-  return label
-    .replace(/[`"]/g, '')
+  return String(label || '')
+    .replace(/[\x60"]/g, '')
     .replace(/___|__/g, ' ')
     .replace(/[_-]+/g, ' ')
     .replace(/,\s*/g, ' ')
@@ -71,76 +17,101 @@ function normalizeLabel(label) {
 }
 
 function findRecommendation(label) {
-  const normalizedLabel = normalizeLabel(label)
+  const normalized = normalizeLabel(label)
   const entry = Object.entries(recommendations).find(
-    ([key]) => normalizeLabel(key) === normalizedLabel
+    ([key]) => normalizeLabel(key) === normalized
   )
-
   return entry ? { diagnosis: entry[0], recommendation: entry[1] } : null
 }
 
-// Predict plant disease from an image File
-export async function predictPlantDisease(imageFile) {
-  try {
-    const client = await getClient()
-    
-    // The API expects the image as a File object
-    const result = await client.predict('/predict', {
-      image: imageFile
-    })
-    
-    // Get the raw Markdown output
-    const rawOutput = result.data?.[0] || 'No diagnosis returned'
-    
-    // Parse the Markdown table into structured data
-    let confidences = parseMarkdownTable(rawOutput)
-    
-    // If the table parsed successfully, use the first prediction as diagnosis
-    let topPrediction = null
-    
-    if (confidences.length > 0) {
-      topPrediction = confidences[0].label
-    } else {
-      // If table parsing failed, try to extract from the "Top-1 Label"
-      topPrediction = extractTopPrediction(rawOutput)
-    }
-    
-    // If still no prediction, show a default message
-    if (!topPrediction) {
-      topPrediction = 'Unable to parse prediction. Please try again with a clearer image.'
-    }
+async function apiRequest(path, token, options = {}) {
+  if (!API_BASE_URL) {
+    throw new Error('AgriScan API URL is not configured. Set VITE_AGRISCAN_API_URL in the website build environment.')
+  }
+  if (!token) {
+    throw new Error('Your sign-in session has expired. Please sign in again.')
+  }
 
-    const topConfidence = confidences[0]?.confidence || 0
-    const matchedRecommendation = findRecommendation(topPrediction)
-    const gated = topConfidence < MIN_RECOMMENDATION_CONFIDENCE || !matchedRecommendation
-    const gateMessage = !matchedRecommendation
-      ? 'No recommendation is available for this model result. Please try another image or consult an agricultural expert.'
-      : topConfidence < MIN_RECOMMENDATION_CONFIDENCE
-        ? `The prediction confidence is ${(topConfidence * 100).toFixed(1)}%. Upload a clearer image before acting on this result.`
-        : null
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  const body = await response.json().catch(() => ({}))
+  if (!response.ok) {
+    const detail = typeof body.detail === 'string' ? body.detail : null
+    throw new Error(detail || `AgriScan API request failed (${response.status}).`)
+  }
+  return body
+}
 
-    // Return in the SAME FORMAT as SkinScan
-    return {
-      diagnosis: matchedRecommendation?.diagnosis || topPrediction,
-      confidences: confidences,
-      topConfidence,
-      recommendation: matchedRecommendation?.recommendation || null,
-      gated,
-      gateMessage,
-      timestamp: new Date().toISOString(),
-      raw: result
-    }
-  } catch (error) {
-    console.error('Agriscan API error:', error)
-    throw new Error(error.message || 'Failed to analyze plant image. Please try again.')
+export async function predictPlantDisease(imageFile, token, cropType, personalDataConsent = false) {
+  if (!imageFile) throw new Error('Choose a crop image before analyzing.')
+  if (!cropType) throw new Error('Select the crop type before analyzing.')
+  if (!personalDataConsent) throw new Error('Consent to personal-data processing is required.')
+
+  const form = new FormData()
+  form.append('image', imageFile)
+  form.append('crop_type', cropType.toLowerCase())
+  form.append('personal_data_consent', 'true')
+
+  const response = await apiRequest('/api/v1/diagnoses', token, {
+    method: 'POST',
+    body: form,
+  })
+
+  const diagnosis = response.diagnosis || {}
+  const prediction = response.prediction || {}
+  const diseaseScores = prediction.disease_predictions || {}
+  const confidences = Object.entries(diseaseScores)
+    .map(([label, confidence]) => ({ label, confidence: Number(confidence) }))
+    .filter((item) => Number.isFinite(item.confidence))
+    .sort((a, b) => b.confidence - a.confidence)
+
+  const topLabel = confidences[0]?.label || diagnosis.disease_name || 'Unclassified result'
+  const topConfidence = confidences[0]?.confidence ?? Number(diagnosis.confidence || 0)
+  const matchedRecommendation = findRecommendation(topLabel)
+  const reviewRequired = diagnosis.status === 'review_required'
+  const gated = reviewRequired || topConfidence < MIN_RECOMMENDATION_CONFIDENCE || !matchedRecommendation
+
+  let gateMessage = null
+  if (reviewRequired) {
+    gateMessage = 'The crop detector and requested crop or classifier results need review. Please confirm the crop and diagnosis with an agricultural expert.'
+  } else if (!matchedRecommendation) {
+    gateMessage = 'No recommendation is available for this model result. Please consult an agricultural expert.'
+  } else if (topConfidence < MIN_RECOMMENDATION_CONFIDENCE) {
+    gateMessage = `The prediction confidence is ${(topConfidence * 100).toFixed(1)}%. Upload a clearer image before acting on this result.`
+  }
+
+  return {
+    id: diagnosis.id,
+    diagnosis: matchedRecommendation?.diagnosis || topLabel,
+    confidences,
+    topConfidence,
+    recommendation: matchedRecommendation?.recommendation || null,
+    gated,
+    gateMessage,
+    timestamp: diagnosis.created_at || new Date().toISOString(),
+    status: diagnosis.status || 'completed',
+    predictedCrop: prediction.predicted_crop || null,
+    requestedCrop: prediction.requested_crop || cropType.toLowerCase(),
+    details: prediction.details || '',
   }
 }
 
-// Get health status
+export async function getDiagnosisHistory(token, limit = 20) {
+  const safeLimit = Math.max(1, Math.min(50, Number(limit) || 20))
+  return apiRequest(`/api/v1/diagnoses?limit=${safeLimit}`, token)
+}
+
 export async function getHealthStatus() {
+  if (!API_BASE_URL) return { status: 'unconfigured' }
   try {
-    await getClient()
-    return { status: 'healthy', space: SPACE_NAME }
+    const response = await fetch(`${API_BASE_URL}/health`)
+    if (!response.ok) throw new Error(`API unavailable (${response.status})`)
+    return await response.json()
   } catch (error) {
     return { status: 'unhealthy', error: error.message }
   }

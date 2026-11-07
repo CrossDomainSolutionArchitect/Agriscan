@@ -30,6 +30,9 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          VITE_AGRISCAN_API_URL: https://vernard-agriscan-efficientnetb0-test.hf.space
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ vars.VITE_CLERK_PUBLISHABLE_KEY || secrets.VITE_CLERK_PUBLISHABLE_KEY }}
         run: npm run build
 
       - name: Publish to gh-pages

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { useAuth } from '@clerk/clerk-react'
 import { Link } from 'react-router-dom'
 import { predictPlantDisease } from '../../services/agriscanService'
 import styles from './AgriscanUploader.module.css'
@@ -11,6 +12,7 @@ const crops = [
 ]
 
 function AgriscanUploader() {
+  const { getToken } = useAuth()
   const [image, setImage] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -19,6 +21,7 @@ function AgriscanUploader() {
   const [isUploadOpen, setIsUploadOpen] = useState(false)
   const [selectedCrop, setSelectedCrop] = useState(null)
   const [isCameraOpen, setIsCameraOpen] = useState(false)
+  const [personalDataConsent, setPersonalDataConsent] = useState(false)
   const videoRef = useRef(null)
   const streamRef = useRef(null)
 
@@ -97,6 +100,7 @@ function AgriscanUploader() {
 
       const file = new File([blob], `agriscan-${Date.now()}.jpg`, { type: 'image/jpeg' })
       setImage(file)
+      setPersonalDataConsent(false)
       setPreview(URL.createObjectURL(file))
       setResult(null)
       setError(null)
@@ -116,6 +120,7 @@ function AgriscanUploader() {
     }
 
     setImage(file)
+    setPersonalDataConsent(false)
     setPreview(URL.createObjectURL(file))
     setResult(null)
     setError(null)
@@ -124,13 +129,23 @@ function AgriscanUploader() {
 
   const handleAnalyze = async () => {
     if (!image) return
+    if (!selectedCrop || !['maize', 'tomato', 'potato'].includes(selectedCrop.title.toLowerCase())) {
+      setError('Select maize, tomato or potato before analyzing. Citrus is not yet enabled in the current AI/database scope.')
+      return
+    }
+
+    if (!personalDataConsent) {
+      setError('Please read and accept the personal-data processing notice before submitting your image.')
+      return
+    }
 
     setLoading(true)
     setError(null)
     setResult(null)
 
     try {
-      const prediction = await predictPlantDisease(image)
+      const token = await getToken()
+      const prediction = await predictPlantDisease(image, token, selectedCrop.title.toLowerCase(), personalDataConsent)
       setResult(prediction)
     } catch (err) {
       setError(err.message || 'Failed to analyze image. Please try again.')
@@ -145,6 +160,7 @@ function AgriscanUploader() {
     setResult(null)
     setError(null)
     setSelectedCrop(null)
+    setPersonalDataConsent(false)
   }
 
   return (
@@ -155,7 +171,7 @@ function AgriscanUploader() {
       </p>
 
       <div className={styles.cropOptions}>
-        {crops.map((crop) => (
+        {crops.filter((crop) => ['maize', 'tomato', 'potato'].includes(crop.title.toLowerCase())).map((crop) => (
           <button
             className={styles.cropOption}
             key={crop.title}
@@ -195,6 +211,17 @@ function AgriscanUploader() {
             <img src={preview} alt="Plant leaf" className={styles.previewImage} />
             {!loading && !result && (
               <div className={styles.imageActions}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.55rem', flex: '1 1 100%', fontSize: '0.82rem', lineHeight: 1.45, color: '#344033' }}>
+                  <input
+                    type="checkbox"
+                    checked={personalDataConsent}
+                    onChange={(event) => setPersonalDataConsent(event.target.checked)}
+                    style={{ marginTop: '0.2rem', flex: '0 0 auto' }}
+                  />
+                  <span>
+                    I agree that AgriScan may process this image to provide a crop-health diagnosis and save the diagnosis details to my account. The image is processed in memory and is not stored. See the <Link to="/privacy">Privacy Policy</Link>.
+                  </span>
+                </label>
                 <button onClick={handleAnalyze} className={styles.analyzeBtn}>
                   🌾 Analyze Image
                 </button>
@@ -361,7 +388,18 @@ function AgriscanUploader() {
             <h3 id="upload-modal-title">
               Upload {selectedCrop ? `${selectedCrop.title.toLowerCase()} ` : ''}photo
             </h3>
-            <p>Use a clear photo of the crop or leaf for the best result.</p>
+            <p>Use a clear photo of the crop or leaf for the best result. Supported crops: maize, tomato and potato.</p>
+            {!selectedCrop && (
+              <label className={styles.cropSelector}>
+                <strong>Crop type</strong>
+                <select value={selectedCrop?.title || ''} onChange={(event) => setSelectedCrop(crops.find((crop) => crop.title === event.target.value) || null)}>
+                  <option value="">Select crop</option>
+                  {crops.filter((crop) => ['maize', 'tomato', 'potato'].includes(crop.title.toLowerCase())).map((crop) => (
+                    <option key={crop.title} value={crop.title}>{crop.title}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <label className={styles.uploadDropzone}>
               <input
                 type="file"
