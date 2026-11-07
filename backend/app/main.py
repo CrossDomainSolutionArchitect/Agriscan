@@ -87,7 +87,7 @@ def verify_clerk_token(token: str) -> dict[str, Any]:
             signing_key.key,
             algorithms=["RS256"],
             issuer=CLERK_ISSUER,
-            options={"require": ["exp", "iat", "sub"]},
+            options={"require": ["exp", "iat", "sub"], "verify_aud": False},
             leeway=30,
         )
     except Exception as exc:
