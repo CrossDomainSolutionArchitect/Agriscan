@@ -10,8 +10,8 @@ function normalizeLabel(label) {
     .replace(/[\x60"]/g, '')
     .replace(/___|__/g, ' ')
     .replace(/[_-]+/g, ' ')
-    .replace(/,\\s*/g, ' ')
-    .replace(/\\s+/g, ' ')
+    .replace(/,\s*/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase()
 }
