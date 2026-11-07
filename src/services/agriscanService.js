@@ -53,17 +53,10 @@ async function apiRequest(path, token, options = {}) {
   return body
 }
 
-export async function syncFarmerProfile(token, profile = {}) {
-  const form = new FormData()
-  const allowedFields = [
-    'first_name', 'last_name', 'username', 'email_address', 'phone',
-    'province', 'district', 'preferred_language',
-  ]
-  allowedFields.forEach((field) => {
-    const value = profile[field]
-    if (typeof value === 'string' && value.trim()) form.append(field, value.trim())
-  })
-  return apiRequest('/api/v1/me', token, { method: 'POST', body: form })
+export async function syncFarmerProfile(token) {
+  // The API derives the farmer identity and profile attributes only from
+  // Clerk's signed session claims; no client-supplied identity is trusted.
+  return apiRequest('/api/v1/me', token)
 }
 
 export async function predictPlantDisease(imageFile, token, cropType, personalDataConsent = false) {
@@ -82,6 +75,12 @@ export async function predictPlantDisease(imageFile, token, cropType, personalDa
   const leaf = prediction.leaf_detection || {}
   const cropBlock = prediction.crop_classifier || {}
   const diseaseBlock = prediction.disease_classifier || {}
+  const details = prediction.details || ''
+  // The currently deployed API returns the original pipeline's Markdown
+  // details and classifier score dictionaries. Extract YOLO11n metadata from
+  // that report while keeping compatibility with a future structured payload.
+  const detectedCropMatch = details.match(/YOLO11n detected crop:\*\*\s*([^\\r\\n]+)/i)
+  const detectionConfidenceMatch = details.match(/Leaf detection confidence:\*\*\s*([0-9]+(?:\\.[0-9]+)?)\\s*%/i)
   const cropPredictions = scoreList(cropBlock.top_predictions || prediction.crop_predictions, 3)
   const diseasePredictions = scoreList(diseaseBlock.top_predictions || prediction.disease_predictions, 5)
 
@@ -116,12 +115,14 @@ export async function predictPlantDisease(imageFile, token, cropType, personalDa
     requestedCrop: prediction.requested_crop || cropType.toLowerCase(),
     leafDetection: {
       model: leaf.model || 'YOLO11n',
-      crop: leaf.crop || null,
-      confidence: Number.isFinite(Number(leaf.confidence)) ? Number(leaf.confidence) : null,
+      crop: leaf.crop || (detectedCropMatch ? detectedCropMatch[1].trim() : null),
+      confidence: Number.isFinite(Number(leaf.confidence))
+        ? Number(leaf.confidence)
+        : (detectionConfidenceMatch ? Number(detectionConfidenceMatch[1]) / 100 : null),
       annotatedImage: leaf.annotated_image || null,
       detected: leaf.detected !== false,
     },
-    details: prediction.details || '',
+    details,
   }
 }
 
