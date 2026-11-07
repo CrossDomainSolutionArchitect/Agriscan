@@ -14,8 +14,7 @@ function AgriscanPage() {
       
       <div className={styles.footerNote}>
         <p>
-          <strong>Privacy:</strong> Your images are processed anonymously. 
-          We do not store or share your uploaded photos.
+          <strong>Privacy:</strong> Your image is sent to the configured AI inference service for analysis and is not stored in the AgriScan database. Diagnosis metadata is saved to your account.
         </p>
       </div>
     </div>
