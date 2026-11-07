@@ -751,3 +751,49 @@
   color: #1a1a1a;
   font: inherit;
 }
+
+
+/* AgriScan staged model results */
+.pageIntro { margin: 0 0 1.75rem; }
+.eyebrow, .panelEyebrow {
+  display: inline-block; color: #62775b; font-size: .72rem; font-weight: 800;
+  letter-spacing: .11em; text-transform: uppercase;
+}
+.pageIntro h2 {
+  margin: .55rem 0 .65rem; color: #172116;
+  font-size: clamp(1.7rem, 4vw, 2.35rem); line-height: 1.12;
+}
+.pageIntro p { max-width: 760px; margin: 0; color: #4c5948; font-size: 1rem; line-height: 1.65; }
+.cropOptionSelected { outline: 3px solid #8ba77b; outline-offset: 3px; }
+
+.modelStages {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;
+}
+.modelResultPanel {
+  min-width: 0; padding: 1.15rem; border: 1px solid #e1e7dc;
+  border-radius: 14px; background: #fff;
+}
+.modelResultPanel:first-child { grid-column: 1 / -1; }
+.modelResultPanel h4 { margin: 0 0 .85rem; color: #263523; font-size: .98rem; }
+.detectionPreview {
+  display: block; width: 100%; max-height: 420px; object-fit: contain;
+  border-radius: 11px; background: #f3f5f1;
+}
+.detectionFacts {
+  display: flex; flex-wrap: wrap; gap: .65rem 1rem; margin-top: .75rem;
+  color: #61705b; font-size: .78rem;
+}
+.detectionFacts strong { color: #293c25; }
+.modelScore { margin: .75rem 0; }
+.modelScoreTop {
+  display: flex; justify-content: space-between; gap: .6rem; margin-bottom: .3rem;
+  color: #344330; font-size: .8rem;
+}
+.modelScoreTop strong { flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+.modelScoreTrack { height: 7px; overflow: hidden; border-radius: 999px; background: #e8eee4; }
+.modelScoreTrack span { display: block; height: 100%; border-radius: inherit; background: #6e8e63; }
+.noModelScores { color: #7b8575; font-size: .82rem; }
+@media (max-width: 760px) {
+  .modelStages { grid-template-columns: 1fr; }
+  .modelResultPanel:first-child { grid-column: auto; }
+}
