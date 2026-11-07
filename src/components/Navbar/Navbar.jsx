@@ -24,7 +24,10 @@ function AuthenticatedNavbar() {
         <div className={styles.navRight}>
           {isSignedIn ? (
             <>
-              <span className={styles.user}>👋 {user?.firstName || 'User'}</span>
+              <Link to="/profile" className={styles.profileLink} aria-label="View my profile">
+                <span className={styles.profileAvatar}>{(user?.firstName || user?.username || 'U').slice(0, 1).toUpperCase()}</span>
+                <span>My profile</span>
+              </Link>
               <button onClick={() => signOut()} className={styles.signOut}>
                 Sign Out
               </button>

@@ -210,7 +210,7 @@ def create_api_app(gradio_demo, predict_image):
             CORSMiddleware,
             allow_origins=origins,
             allow_credentials=True,
-            allow_methods=["GET", "POST", "OPTIONS"],
+            allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
             allow_headers=["Authorization", "Content-Type"],
         )
 
@@ -224,7 +224,35 @@ def create_api_app(gradio_demo, predict_image):
     @api.get("/api/v1/me")
     def get_me(claims: dict = Depends(current_claims)):
         profile = _upsert_farmer(claims)
-        return {"farmer": profile}
+        consents = _supabase_request(
+            "GET",
+            "consent_records",
+            params={
+                "select": "id,consent_type,policy_version,granted_at,withdrawn_at",
+                "farmer_id": f"eq.{profile['id']}",
+                "order": "granted_at.desc",
+            },
+        )
+        return {"farmer": profile, "consents": consents}
+
+    @api.delete("/api/v1/me")
+    def delete_me(claims: dict = Depends(current_claims)):
+        # The verified Clerk subject scopes deletion to this user's own record.
+        # Supabase foreign keys cascade to this farmer's diagnoses and consents.
+        deleted = _supabase_request(
+            "DELETE",
+            "farmer_profiles",
+            params={
+                "clerk_user_id": f"eq.{claims['sub']}",
+                "select": "id",
+            },
+            prefer="return=representation",
+        )
+        return {
+            "success": True,
+            "farmer_profile_deleted": bool(deleted),
+            "related_records_cascaded": True,
+        }
 
     @api.post("/api/v1/diagnoses")
     def create_diagnosis(

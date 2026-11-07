@@ -7,7 +7,10 @@ function AgriscanPage() {
   return (
     <div className={styles.page}>
       <div className={styles.header}>
-        <Link to="/" className={styles.back}>← Back to home</Link>
+        <div className={styles.pageLinks}>
+          <Link to="/" className={styles.back}>← Back to home</Link>
+          <Link to="/profile" className={styles.profileLink}>My profile →</Link>
+        </div>
       </div>
       
       <AgriscanUploader />

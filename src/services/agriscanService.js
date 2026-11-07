@@ -59,6 +59,10 @@ export async function syncFarmerProfile(token) {
   return apiRequest('/api/v1/me', token)
 }
 
+export async function deleteFarmerData(token) {
+  return apiRequest('/api/v1/me', token, { method: 'DELETE' })
+}
+
 export async function predictPlantDisease(imageFile, token, cropType, personalDataConsent = false) {
   if (!imageFile) throw new Error('Choose a crop image before analysing.')
   if (!cropType) throw new Error('Select the crop type before analysing.')

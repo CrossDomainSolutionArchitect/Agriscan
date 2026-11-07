@@ -1,0 +1,50 @@
+.page { min-height: 100vh; background: #f7f8f5; color: #20291f; }
+.main { width: min(1080px, calc(100% - 2rem)); margin: 0 auto; padding: 3rem 0 5rem; }
+.pageTop { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; margin-bottom:1.8rem; }
+.eyebrow,.sectionLabel { color:#70836a; font-size:.7rem; font-weight:800; letter-spacing:.12em; }
+.pageTop h1 { margin:.45rem 0; font-size:clamp(2rem,4vw,2.8rem); line-height:1.1; }
+.pageTop p { max-width:650px; margin:0; color:#657060; line-height:1.6; }
+.backLink { flex:0 0 auto; color:#385b31; font-weight:700; text-decoration:none; }
+.card,.dangerCard { margin-top:1.1rem; padding:1.5rem; border:1px solid #e1e7dc; border-radius:16px; background:#fff; }
+.cardHeading { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.2rem; }
+.cardHeading h2,.dangerCard h2 { margin:.35rem 0 0; font-size:1.25rem; }
+.status,.neutralStatus,.count,.recordStatus { padding:.35rem .65rem; border-radius:999px; background:#eaf3e6; color:#3f6336; font-size:.72rem; font-weight:750; white-space:nowrap; }
+.neutralStatus { background:#f0f1ed; color:#626b5d; }
+.profileGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85rem; }
+.profileIdentity { grid-column:1/-1; display:flex; align-items:center; gap:1rem; padding:.9rem; border-radius:12px; background:#f7faf5; }
+.avatar { width:54px; height:54px; border-radius:50%; object-fit:cover; background:#e4eadf; }
+.profileIdentity strong,.profileIdentity span,.field span,.field strong,.consentRow span,.consentRow strong { display:block; }
+.profileIdentity span { margin-top:.25rem; color:#75806e; font-size:.82rem; overflow-wrap:anywhere; }
+.field { padding:.75rem .85rem; border:1px solid #edf0e9; border-radius:10px; min-width:0; }
+.field span { color:#7b8675; font-size:.73rem; }
+.field strong { margin-top:.3rem; font-size:.88rem; overflow-wrap:anywhere; }
+.helper { margin:.9rem 0 0; color:#788273; font-size:.77rem; line-height:1.55; }
+.tableWrap { width:100%; overflow-x:auto; }
+.table { width:100%; border-collapse:collapse; text-align:left; font-size:.82rem; }
+.table th { padding:.7rem .65rem; background:#f6f8f4; color:#697565; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; white-space:nowrap; }
+.table td { padding:.85rem .65rem; border-bottom:1px solid #edf0e9; color:#34402f; }
+.recordStatus { display:inline-block; background:#f0f2ed; color:#5d6858; }
+.empty,.loading { color:#707b6b; font-size:.88rem; }
+.consentRow { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.9rem; border:1px solid #edf0e9; border-radius:10px; }
+.consentRow span { margin-top:.3rem; color:#7b8675; font-size:.76rem; }
+.dangerCard { border-color:#ead5d2; background:#fffdfd; }
+.dangerCard .sectionLabel { color:#a15a52; }
+.dangerCard p { max-width:800px; color:#6e6664; font-size:.86rem; line-height:1.65; }
+.deleteButton { border:0; border-radius:9px; padding:.75rem 1rem; background:#9b3932; color:#fff; font:inherit; font-size:.84rem; font-weight:750; cursor:pointer; }
+.deleteButton:disabled { opacity:.45; cursor:not-allowed; }
+.notice { padding:.9rem 1rem; border:1px solid #e9dfbd; border-radius:10px; background:#fff9e9; color:#745e2d; font-size:.82rem; line-height:1.55; }
+.confirmBox { max-width:560px; padding:1rem; border:1px solid #ead5d2; border-radius:12px; background:#fff; }
+.confirmBox label { display:block; margin-bottom:.55rem; color:#514744; font-size:.85rem; }
+.confirmBox input { width:100%; min-height:42px; padding:.6rem .7rem; border:1px solid #cfc9c5; border-radius:8px; font:inherit; }
+.confirmActions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.6rem; margin-top:.8rem; }
+.cancelButton { border:1px solid #d8dcd3; border-radius:9px; padding:.7rem 1rem; background:#fff; color:#44513f; font:inherit; font-size:.84rem; font-weight:700; cursor:pointer; }
+.cancelButton:disabled { opacity:.5; }
+.error { margin:1rem 0; padding:.8rem 1rem; border:1px solid #e6c7c3; border-radius:10px; background:#fff1ef; color:#883c35; font-size:.84rem; }
+@media(max-width:680px) {
+ .main { width:min(100% - 1.2rem,1080px); padding:2rem 0 3rem; }
+ .pageTop { align-items:flex-start; flex-direction:column; }
+ .card,.dangerCard { padding:1rem; }
+ .profileGrid { grid-template-columns:1fr; }
+ .consentRow { align-items:flex-start; flex-direction:column; }
+ .table { min-width:650px; }
+}
