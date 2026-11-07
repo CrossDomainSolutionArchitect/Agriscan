@@ -8,7 +8,7 @@ Production site: [agri-scan.co.za](https://agri-scan.co.za)
 
 ## Features
 
-- Crop selection for maize, tomato, citrus, and potato.
+- Crop selection for maize, tomato, and potato (citrus remains disabled until model/database support is aligned).
 - Image upload with JPG, PNG, and WEBP support.
 - Camera capture on supported devices.
 - AI prediction through the authenticated AgriScan FastAPI backend, which calls the configured Hugging Face Gradio inference Space server-side.
@@ -31,7 +31,7 @@ Production site: [agri-scan.co.za](https://agri-scan.co.za)
 - Vite
 - React Router
 - Clerk React
-- Hugging Face Gradio client
+- FastAPI backend hosted on Hugging Face Spaces
 - Vitest and Testing Library
 
 ## Requirements
@@ -53,6 +53,7 @@ Create `.env.local` in the project root:
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_live_your_publishable_key
+VITE_AGRISCAN_API_URL=https://YOUR-API-SPACE.hf.space
 ```
 
 Only the Clerk publishable key and public FastAPI base URL belong in the Vite frontend. Never put Clerk secret keys, Supabase secret/service-role keys, or Hugging Face tokens in source code or any client-side bundle.
