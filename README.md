@@ -12,7 +12,7 @@ Production site: [agri-scan.co.za](https://agri-scan.co.za)
 - Image upload with JPG, PNG, and WEBP support.
 - Camera capture on supported devices.
 - AI prediction through the
-  [`Vernard/agriscan-ai-demo`](https://huggingface.co/spaces/Vernard/agriscan-ai-demo)
+  [`Vernard/agriscan-ai-demo`](https://huggingface.co/spaces/Vernard/agriscan-efficientnetb0-test)
   Hugging Face Space using `@gradio/client`.
 - Confidence scores for the model's predictions.
 - Local recommendation data for supported disease labels.
@@ -118,7 +118,7 @@ src/
 │   └── diseaseRecommendations.json
 ├── pages/
 │   ├── AgriscanPage/
-│   └── SkinScanPage/
+│ 
 ├── services/
 │   └── agriscanService.js     # Gradio connection and result parsing
 ├── App.jsx                    # Routes and protected demo access
@@ -129,7 +129,7 @@ public/                        # Static images and GitHub Pages files
 ## Authentication
 
 Clerk is initialized in `src/main.jsx` using
-`VITE_CLERK_PUBLISHABLE_KEY`. The `/agriscan` and `/skinscan` routes require
+`VITE_CLERK_PUBLISHABLE_KEY`. The `/agriscan` routes require
 an authenticated Clerk user. When an unauthenticated user selects a demo,
 the Clerk sign-up modal opens and returns the user to the requested route after
 authentication.
@@ -159,7 +159,7 @@ Before deploying:
    ```
 
 Demo links use React Router client-side navigation. This is important for
-GitHub Pages because direct server requests to `/agriscan` or `/skinscan` may
+GitHub Pages because direct server requests to `/agriscan` may
 otherwise return a 404 instead of allowing the single-page application to
 handle the route.
 
